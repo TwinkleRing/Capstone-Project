@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_navi_home"
+        android:icon="@drawable/bottomview_home1"
+        android:title="홈"/>
+    <item
+        android:id="@+id/bottom_navi_class"
+        android:icon="@drawable/bottomview_community_removebg1"
+        android:title="강의검색" />
+    <item
+        android:id="@+id/bottom_navi_alarm"
+        android:icon="@drawable/bottomview_alarm1"
+        android:title="알림" />
+    <item
+        android:id="@+id/bottom_navi_navigation"
+        android:icon="@drawable/bottomview_timetable_removebg1"
+        android:title="네비게이션"/>
+    <item
+        android:id="@+id/bottom_navi_tensor"
+        android:icon="@drawable/bottomview_campuspick_removebg1"
+        android:title="추가 예정"/>
+
+
+</menu>
