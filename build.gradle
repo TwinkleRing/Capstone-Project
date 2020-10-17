@@ -4,17 +4,16 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
+        maven { url 'https://mapbox.bintray.com/mapbox' }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
