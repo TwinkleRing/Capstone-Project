@@ -6,11 +6,13 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager = getSupportFragmentManager();
+
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment;
     NavigationFragment navigationFragment;
@@ -33,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         classFragment = new ClassFragment();
         alarmFragment = new AlarmFragment();
         tensorFragment = new TensorFragment();
-
-
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 

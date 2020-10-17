@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
@@ -22,7 +23,7 @@ allprojects {
             credentials {
                 username = 'mapbox'
                 // Use the secret token you stored in gradle.properties as the password
-                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
+                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: "sk.eyJ1IjoiZ291ejc1MTQiLCJhIjoiY2tnZDl2NXN0MGhseTJ6bnYwM3p2bDljZiJ9.9a169OyecCl3uW2yK2pvrQ"
             }
         }
         google()
