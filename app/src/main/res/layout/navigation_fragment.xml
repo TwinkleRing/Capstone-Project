@@ -7,6 +7,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        mapbox:mapbox_cameraTargetLat="37.321643"
+        mapbox:mapbox_cameraTargetLng="127.126756"
+        mapbox:mapbox_cameraZoom="16">
 
+        <Button
+            android:id="@+id/btnDKU"
+            android:layout_width="80dp"
+            android:layout_height="55dp"
+            android:background="@color/mapboxBlue"
+            android:gravity="center_horizontal"
+            android:paddingTop="20dp"
+            android:text="@string/btnDKU"
+            android:textColor="@color/mapboxWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mapView" />
+    </com.mapbox.mapboxsdk.maps.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
