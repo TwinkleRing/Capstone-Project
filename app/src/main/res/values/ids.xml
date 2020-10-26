@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="join_email" type="id" />
+    <item name="join_password" type="id" />
+    <item name="join_name" type="id" />
+    <item name="join_pwck" type="id" />
+    <item name="check_button" type="id" />
+    <item name="connection_status_textview" type="id" />
+    <item name="input_string_edittext" type="id" />
+    <item name="message_listview" type="id" />
+    <item name="send_button" type="id" />
+</resources>

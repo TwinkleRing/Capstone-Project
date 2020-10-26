@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-
+    implementation 'com.github.tlaabs:TimetableView:1.0.3-fx1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.google.android.material:material:1.1.0'
@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.3.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-core:2.0.1'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'
+
 }
