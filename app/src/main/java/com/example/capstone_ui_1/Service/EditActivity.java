@@ -15,6 +15,7 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.capstone_ui_1.FindClassActivity;
 import com.example.capstone_ui_1.HomeFragment;
 import com.example.capstone_ui_1.MainActivity;
 import com.example.capstone_ui_1.R;
@@ -50,6 +51,16 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         init();
+        Button b = (Button) findViewById(R.id.timetable_search_button);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        getApplicationContext(),
+                        FindClassActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void init(){
