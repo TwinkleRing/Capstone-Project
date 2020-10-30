@@ -1,5 +1,6 @@
 package com.example.capstone_ui_1;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,10 @@ import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -26,14 +31,21 @@ import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.os.Looper.getMainLooper;
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
@@ -47,7 +59,11 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     private PermissionsManager permissionsManager;
     private LocationComponent locationComponent;
 
+    // variables for calculating and drawing a route
+    private DirectionsRoute currentRoute;
+
     private static final String TAG = "DirectionsActivity";
+    private NavigationMapRoute navigationMapRoute;
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
@@ -55,7 +71,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
 
     // variable needed to listen to location update
-//    private NavActivityLocationCallback callback = new NavActivityLocationCallback(this);
+    private NavigationFragmentLocationCallback callback = new NavigationFragmentLocationCallback(this);
 
     double destinationLa; // latitude 목적지 위도
     double destinationLo; // longitude 목적지 경도
@@ -67,6 +83,8 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     public static double DKULa = 37.321229;
     public static double DKULo = 127.127432;
 
+    // Navigation & Button
+    private MapboxDirections client;
     private Button dkuButton, mylocButton;
 
     // Navigation
@@ -90,14 +108,14 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
-            private MapboxMap mapboxMap;
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                mapboxMap.addOnMapClickListener(NavigationFragment.this);
+//                mapboxMap.addOnMapClickListener(NavigationFragment.this);
+                NavigationFragment.this.mapboxMap = mapboxMap;
                 mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/gouz7514/cke8d56tw4y5v19jv8ecm5l7v"), new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-//                        enableLocationComponent(style);
+                        enableLocationComponent(style);
                     }
                 });
 
@@ -114,12 +132,12 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                 .build(); // Creates a CameraPosition from the builder
                         Log.e(TAG, "DKU position : " + position);
 
-                        // TODO : Attempt to invoke virtual method 해결해야 함
                         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000);
                         Toast.makeText(getApplicationContext(), String.format("단국대 위치로 이동합니다"), Toast.LENGTH_LONG).show();
                     }
                 });
 
+                // TODO : mylocButton doest not work yet
                 mylocButton = view.findViewById(R.id.btnMyLoc);
                 mylocButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -134,13 +152,41 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                         mapboxMap.animateCamera(CameraUpdateFactory
                                 .newCameraPosition(position), 7000);
 
-                        // TODO : 내위치 버튼 클릭하면 위도, 경도 대신 실제 주소 띄워보기
                         Toast.makeText(getApplicationContext(), String.format("내 위치로 이동합니다."), Toast.LENGTH_LONG).show();
                     }
                 });
+
             }
         });
         return view;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initLocationEngine() {
+        Log.e(TAG,"initLocationEngine 실행");
+        locationEngine = LocationEngineProvider.getBestLocationEngine(getApplicationContext());
+        LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
+        locationEngine.requestLocationUpdates(request, callback, getMainLooper());
+        locationEngine.getLastLocation(callback);
+    }
+
+    // TODO : NavigationFragmentLocationCallback : 현재 위치 받아오는 callback : success만 확인함
+    private static class NavigationFragmentLocationCallback implements LocationEngineCallback<LocationEngineResult> {
+        public NavigationFragmentLocationCallback(NavigationFragment navigationFragment) {
+        }
+
+        @Override
+        public void onSuccess(LocationEngineResult result) {
+            Log.e(TAG,"NavigationFragmentLocationCallback onSuccess 실행");
+
+        }
+
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+
+        }
     }
 
     @Override
@@ -164,9 +210,108 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onPermissionResult(boolean granted) {
         if (granted) {
-//            enableLocationComponent(mapboxMap.getStyle());
+            enableLocationComponent(mapboxMap.getStyle());
         } else {
-            Toast.makeText(getApplicationContext(), R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+    }
+
+    private void getRoute_walking(Point origin, Point destination) {
+        Log.e(TAG,"getRoute 실행");
+        client = MapboxDirections.builder()
+                .origin(origin)//출발지 위도 경도
+                .destination(destination)//도착지 위도 경도
+                .overview(DirectionsCriteria.OVERVIEW_FULL)//정보 받는정도 최대
+                .profile(DirectionsCriteria.PROFILE_WALKING)//길찾기 방법(도보,자전거,자동차)
+                .accessToken(getString(R.string.mapbox_access_token))
+                .build();
+
+        client.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                Log.e(TAG,"onResponse 실행");
+                System.out.println(call.request().url().toString());
+                // You can get the generic HTTP info about the response
+                Log.e(TAG, "Response code: " + response.code());
+                if (response.body() == null) {
+                    Log.e(TAG, "No routes found, make sure you set the right user and access token.");
+                    return;
+                } else if (response.body().routes().size() < 1) {
+                    Log.e(TAG, "No routes found");
+                    return;
+                }
+                // Print some info about the route
+                currentRoute = response.body().routes().get(0);
+                Log.e(TAG, "Distance: " + currentRoute.distance());
+
+                int time = (int) (currentRoute.duration()/60);
+                //예상 시간을초단위로 받아옴
+                double distances = (currentRoute.distance()/1000);
+
+                //목적지까지의 거리를 m로 받아옴
+                distances = Math.round(distances*100)/100.0;
+                //Math.round() 함수는 소수점 첫째자리에서 반올림하여 정수로 남긴다
+                //원래 수에 100곱하고 round 실행 후 다시 100으로 나눈다 -> 둘째자리까지 남김
+
+                Toast.makeText(getApplicationContext(), String.format("예상 시간 : " + String.valueOf(time)+" 분 \n" +
+                        "목적지 거리 : " +distances+ " km"), Toast.LENGTH_LONG).show();
+                // Draw the route on the map
+                // drawRoute(currentRoute);
+            }
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                Log.e(TAG, "Error: " + throwable.getMessage());
+                Toast.makeText(getActivity(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getRoute_navi_walking (Point origin, Point destinaton) {
+        // https://docs.mapbox.com/android/navigation/overview/map-matching/
+        NavigationRoute.builder(getActivity()).accessToken(Mapbox.getAccessToken())
+                .profile(DirectionsCriteria.PROFILE_WALKING)//도보 길찾기
+                .origin(origin)//출발지
+                .destination(destinaton).//도착지
+                build().
+                getRoute(new Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                        if (response.body() == null) {
+                            return;
+                        } else if (response.body().routes().size() ==0) {
+                            return;
+                        }
+                        currentRoute = response.body().routes().get(0);
+                        if (navigationMapRoute != null) {
+                            navigationMapRoute.removeRoute();
+                        } else {
+                            navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap, R.style.NavigationMapRoute);
+                        }
+                        navigationMapRoute.addRoute(currentRoute);
+                    }
+                    @Override
+                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                    }
+                });
+    }
+
+    @SuppressWarnings({"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+        // Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(getActivity())) {
+            Log.e(TAG, "enableLocationComponent Success");
+            // Get an instance of the LocationComponent.
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.activateLocationComponent(getActivity(), loadedMapStyle);
+            locationComponent.setLocationComponentEnabled(true);
+            // Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+            initLocationEngine();
+        } else {
+            Log.e(TAG, "enableLocationComponent Faliure");
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(getActivity());
         }
     }
 
