@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -21,17 +21,31 @@
         mapbox:mapbox_cameraTargetLng="127.126756"
         mapbox:mapbox_cameraZoom="16">
 
-        <Button
-            android:id="@+id/btnDKU"
-            android:layout_width="80dp"
-            android:layout_height="55dp"
-            android:background="@color/mapboxBlue"
-            android:gravity="center_horizontal"
-            android:paddingTop="20dp"
-            android:text="@string/btnDKU"
-            android:textColor="@color/mapboxWhite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mapView" />
+
     </com.mapbox.mapboxsdk.maps.MapView>
+
+    <Button
+        android:id="@+id/btnDKU"
+        android:layout_width="80dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/mapboxBlue"
+        android:gravity="center_horizontal"
+        android:paddingTop="20dp"
+        android:text="@string/btnDKU"
+        android:textColor="@color/mapboxWhite"
+        app:layout_constraintEnd_toStartOf="@+id/btnMyLoc"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnMyLoc"
+        android:layout_width="78dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/mapboxBlue"
+        android:text="@string/btnMyLoc"
+        android:textColor="@color/mapboxWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
