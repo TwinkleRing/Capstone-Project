@@ -22,4 +22,7 @@
         <item>Thu</item>
         <item>Fri</item>
     </string-array>
+
+    <string name="channel_description">Capstone push notification</string>
+    <string name="channel_name">Capstone</string>
 </resources>
