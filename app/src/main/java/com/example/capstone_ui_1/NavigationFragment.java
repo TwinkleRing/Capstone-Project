@@ -28,6 +28,7 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -38,6 +39,8 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
@@ -68,7 +71,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
-    private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L; // 여기 고쳐야 업데이트가 더 빠르려나?
+    private long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
 
     // variable needed to listen to location update
@@ -86,7 +89,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
     // Navigation & Button
     private MapboxDirections client;
-    private Button dkuButton, mylocButton;
+    private Button dkuButton, mylocButton, startButton;
 
     // Navigation
     private Marker destinationMarker;
@@ -110,9 +113,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-//                mapboxMap.addOnMapClickListener(NavigationFragment.this);
+            public void onMapReady(@NonNull MapboxMap mapboxMap) { ;
                 NavigationFragment.this.mapboxMap = mapboxMap;
+                mapboxMap.addOnMapClickListener(NavigationFragment.this);
                 mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/gouz7514/cke8d56tw4y5v19jv8ecm5l7v"), new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
@@ -138,7 +141,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                     }
                 });
 
-                // TODO : mylocButton doest not work yet
                 mylocButton = view.findViewById(R.id.btnMyLoc);
                 mylocButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -154,6 +156,19 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                 .newCameraPosition(position), 7000);
 
                         Toast.makeText(getApplicationContext(), String.format("내 위치로 이동합니다."), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                startButton = view.findViewById(R.id.btnStartNavigation);
+                startButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.e(TAG, "startButton clicked");
+                        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                                .directionsRoute(currentRoute)
+                                .build();
+                        // Call this method with Context from within an Activity
+                        NavigationLauncher.startNavigation(getActivity(), options);
                     }
                 });
 
@@ -173,7 +188,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         locationEngine.getLastLocation(callback);
     }
 
-    // TODO : NavigationFragmentLocationCallback : 현재 위치 받아오는 callback : success만 확인함
     private static class LocationCallback implements LocationEngineCallback<LocationEngineResult> {
         private final WeakReference<NavigationFragment> activityWeakReference;
         public LocationCallback(NavigationFragment navigationFragment) {
@@ -240,7 +254,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     }
 
     private void getRoute_walking(Point origin, Point destination) {
-        Log.e(TAG,"getRoute 실행");
+        Log.e(TAG,"getRoute_walking 실행");
         client = MapboxDirections.builder()
                 .origin(origin)//출발지 위도 경도
                 .destination(destination)//도착지 위도 경도
@@ -339,7 +353,22 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
 
     @Override
+    //지도 클릭시 자동 길찾기
     public boolean onMapClick(@NonNull LatLng point) {
+
+        if (destinationMarker != null) {
+            mapboxMap.removeMarker(destinationMarker);
+        }
+        destinationMarker = mapboxMap.addMarker(new MarkerOptions().position(point));//마커 추가
+        destinatonPosition = Point.fromLngLat(point.getLongitude(), point.getLatitude());//클릭한곳의 좌표
+        Log.e(TAG, "destinationPosition : " + destinatonPosition);
+        originPosition = Point.fromLngLat(Lo, La);//현재 좌표
+        getRoute_walking(originPosition, destinatonPosition);
+        getRoute_navi_walking(originPosition, destinatonPosition);
+        startButton.setEnabled(true);   //네비게이션 버튼 활성화
+        startButton.setBackgroundResource(R.color.mapboxBlue);
+//        arButton.setEnabled(true);
+//        arButton.setBackgroundResource(R.color.mapboxBlue);
         return false;
     }
 
