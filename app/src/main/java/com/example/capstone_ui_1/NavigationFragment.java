@@ -1,6 +1,7 @@
 package com.example.capstone_ui_1;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     private long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
 
     // variable needed to listen to location update
-    private NavigationFragmentLocationCallback callback = new NavigationFragmentLocationCallback(this);
+    private LocationCallback callback = new LocationCallback(this);
 
     double destinationLa; // latitude 목적지 위도
     double destinationLo; // longitude 목적지 경도
@@ -173,18 +174,39 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     }
 
     // TODO : NavigationFragmentLocationCallback : 현재 위치 받아오는 callback : success만 확인함
-    private static class NavigationFragmentLocationCallback implements LocationEngineCallback<LocationEngineResult> {
-        public NavigationFragmentLocationCallback(NavigationFragment navigationFragment) {
+    private static class LocationCallback implements LocationEngineCallback<LocationEngineResult> {
+        private final WeakReference<NavigationFragment> activityWeakReference;
+        public LocationCallback(NavigationFragment navigationFragment) {
+            this.activityWeakReference = new WeakReference<>(navigationFragment);
         }
 
         @Override
         public void onSuccess(LocationEngineResult result) {
-            Log.e(TAG,"NavigationFragmentLocationCallback onSuccess 실행");
+            Log.e(TAG,"LocationCallback onSuccess 실행");
+            NavigationFragment activity = activityWeakReference.get();
+            if (activity != null) {
+                Location location = result.getLastLocation();
+                if (location == null) {
+                    return;
+                }
+                // Create a Toast which displays the new location's coordinates
+                La = result.getLastLocation().getLatitude();
+                Lo = result.getLastLocation().getLongitude();
 
+                // Pass the new location to the Maps SDK's LocationComponent
+                if (activity.mapboxMap != null && result.getLastLocation() != null) {
+                    activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
+                }
+            }
         }
 
         @Override
         public void onFailure(@NonNull Exception exception) {
+            Log.e(TAG,"LocationCallback onFailure 실행");
+            NavigationFragment activity = activityWeakReference.get();
+            if (activity != null) {
+                Toast.makeText(getApplicationContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
@@ -262,7 +284,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
                 Log.e(TAG, "Error: " + throwable.getMessage());
-                Toast.makeText(getActivity(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
