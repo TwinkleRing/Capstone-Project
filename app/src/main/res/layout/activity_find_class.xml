@@ -72,11 +72,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <SearchView
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="27dp"
-            tools:layout_editor_absoluteY="6dp" />
+            android:orientation="vertical" >
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/autoCompleteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionHint="pick an item" />
+        </LinearLayout>
+
+
+        출처: https://namget.tistory.com/entry/안드로이드-AutoComplete-자동-검색-기능-만들기 [남갯,YTS의 개발,일상블로그]
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

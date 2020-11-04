@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.layout_grade.setText(arrayList.get(position).getGrade());
         holder.layout_time.setText(arrayList.get(position).getTime());
         holder.layout_classroom.setText(arrayList.get(position).getClassroom());
-
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         TextView layout_classname;
         TextView layout_major;
         TextView layout_point;
-
+        Button layout_legister;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.layout_classroom = itemView.findViewById(R.id.layout_classroom);
@@ -67,7 +67,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             this.layout_grade = itemView.findViewById(R.id.layout_grade);
             this.layout_professor = itemView.findViewById(R.id.layout_professor);
             this.layout_time = itemView.findViewById(R.id.layout_time);
-
+            this.layout_legister = itemView.findViewById(R.id.layout_legister);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -78,5 +78,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             });
         }
     }
+
 
 }
