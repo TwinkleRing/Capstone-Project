@@ -7,11 +7,11 @@
     <string name="user_location_permission_explanation">위치권한설정이 필요함</string>
     <string name="user_location_permission_not_granted">위치권한실패</string>
     <string-array name="days">
-        <item >Mon</item>
-        <item >Tue</item>
-        <item >Wed</item>
-        <item >Thu</item>
-        <item >Fri</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
     </string-array>
 
     <string-array name="header_title">
