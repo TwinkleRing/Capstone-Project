@@ -15,9 +15,7 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.capstone_ui_1.FindClassActivity;
 import com.example.capstone_ui_1.HomeFragment;
-import com.example.capstone_ui_1.MainActivity;
 import com.example.capstone_ui_1.R;
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
