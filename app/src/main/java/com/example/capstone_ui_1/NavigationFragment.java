@@ -1,6 +1,8 @@
 package com.example.capstone_ui_1;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +91,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
     // Navigation & Button
     private MapboxDirections client;
-    private Button dkuButton, mylocButton, startButton;
+    private Button dkuButton, mylocButton, startButton, arButton, areaButton;
 
     // Navigation
     private Marker destinationMarker;
@@ -101,12 +103,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(getActivity(), getString(R.string.mapbox_access_token));
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.navigation_fragment, container, false);
         mapView = view.findViewById(R.id.mapView);
 
@@ -169,6 +172,18 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                 .build();
                         // Call this method with Context from within an Activity
                         NavigationLauncher.startNavigation(getActivity(), options);
+                    }
+                });
+
+                // TODO : arButton onCLick, setEnable
+                arButton = view.findViewById(R.id.btnStartAR);
+
+                // TODO : areaButton : 학교 구역별 보기
+                areaButton = view.findViewById(R.id.btnArea);
+                areaButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
 
