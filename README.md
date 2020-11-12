@@ -10,7 +10,8 @@
 ✔ `NavigationFragmentLocationCallback` : 현재 위치 받아오는 callback <br>
 ✔ `mylocButton` : 현재 위치로 이동하는 버튼 <br>
 ✔ `onMapClick` : 지도 상에서 클릭 시 길 안내하는 버튼 <br>
-⌚ 유니티랑 연동 필요
+✔ 유니티랑 연동 완료<br>
+⌚ AR 정확도 향상 필요
 
 ### 진행상황<br>
 **2020/10/17** <br>
@@ -26,3 +27,6 @@ Mapbox Maps SDK, Mapbox Navigation SDK 추가 완료 <br>
 `mylocButton` : 현재 내 위치로 이동하는 버튼 구현 완료<br>
 길 찾기 함수 동작 <br>
 `startButton.setOnClickListener` : 길 안내 시작 버튼 클릭 시 길 안내 기능 구현 완료<br>
+
+**2020/11/12** <br>
+`UnityPlayerActivity` : Unity와의 연동

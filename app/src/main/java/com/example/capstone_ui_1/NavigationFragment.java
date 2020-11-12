@@ -3,6 +3,7 @@ package com.example.capstone_ui_1;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Camera;
 import android.location.Location;
 import android.os.Bundle;
@@ -178,6 +179,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
                 // TODO : arButton onCLick, setEnable
                 arButton = view.findViewById(R.id.btnStartAR);
+                arButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), UnityPlayerActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
                 // TODO : areaButton : 학교 구역별 보기, 코드 간략화해보기
                 areaButton = view.findViewById(R.id.btnArea);
@@ -422,8 +430,8 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         getRoute_navi_walking(originPosition, destinatonPosition);
         startButton.setEnabled(true);   //네비게이션 버튼 활성화
         startButton.setBackgroundResource(R.color.mapboxBlue);
-//        arButton.setEnabled(true);
-//        arButton.setBackgroundResource(R.color.mapboxBlue);
+        arButton.setEnabled(true);
+        arButton.setBackgroundResource(R.color.mapboxBlue);
         return false;
     }
 
