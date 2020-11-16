@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Service.SettingActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_toolbar_inside_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar_inside"
+            layout="@layout/toolbar_inside"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll_toolbar_inside_set"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".SettingActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/primary_border_fill3"
+                    android:gravity="center">
+
+
+
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="1dp"
+
+                        android:background="@android:color/transparent"
+                        android:hint="강의 명을 설정하세요"
+                        android:textSize="21dp" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="시작날짜 : "
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/startDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:hint=" 설정하세요"
+                        android:textSize="18dp" />
+
+                    <Button
+                        android:id="@+id/startBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/primary_border_fill_8"
+                        android:text="설정"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="종료날짜 : "
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/endDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:hint=" 설정하세요"
+                        android:textSize="18dp" />
+
+                    <Button
+                        android:id="@+id/endBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/primary_border_fill_8"
+                        android:text="설정"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        android:text="요일"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/timelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TableRow>
+
+                            <Button
+                                android:id="@+id/mon"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="월"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/tue"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="화"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/wed"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="수"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/thu"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="목"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/fri"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="금"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/sat"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="토"
+                                android:textColor="#000000" />
+
+                            <Button
+                                android:id="@+id/sun"
+                                android:layout_weight="1"
+                                android:background="@drawable/primary_border_fill3"
+                                android:text="일"
+                                android:textColor="#000000" />
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:enabled="false"
+                        android:paddingLeft="10dp"
+                        android:text="시간 : 버튼을 길게 누르세요 -->>>"
+                        android:textSize="17dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:textSize="15dp" />
+
+                    <Button
+                        android:id="@+id/timeplus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/primary_border_fill_8"
+                        android:text="복용횟수"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/timelayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/modi1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="3dp"
+                            android:background="@drawable/primary_border_fill_7"
+                            android:text="설정" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/timelayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/modi2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:background="@drawable/primary_border_fill_7"
+                            android:text="설정" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/timelayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/modi3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:background="@drawable/primary_border_fill_7"
+                            android:text="설정" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/timelayout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/modi4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:background="@drawable/primary_border_fill_7"
+                            android:text="설정" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/timelayout5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/modi5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="3dp"
+                            android:background="@drawable/primary_border_fill_7"
+                            android:text="설정" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginLeft="120dp"
+                        android:text="저장하기" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

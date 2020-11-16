@@ -1,17 +1,19 @@
 <resources>
-    <string name="app_name">My CapstoneUI</string>
+    <string name="app_name">My Capstone</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZ291ejc1MTQiLCJhIjoiY2thbzFxOTg0MTU1ejJ4bG85dm1zbTg3biJ9.jAXS_jXPQusNugc_430LfA</string>
     <string name="btnDKU">단국대 지도</string>
     <string name="btnMyLoc">내 위치</string>
     <string name="btnStartNavigation">길 안내 시작</string>
     <string name="user_location_permission_explanation">위치권한설정이 필요함</string>
     <string name="user_location_permission_not_granted">위치권한실패</string>
+    <string name="btnStartAR">AR 안내 시작</string>
+    <string name="btnArea">학교 구역</string>
     <string-array name="days">
-        <item >Mon</item>
-        <item >Tue</item>
-        <item >Wed</item>
-        <item >Thu</item>
-        <item >Fri</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
     </string-array>
 
     <string-array name="header_title">

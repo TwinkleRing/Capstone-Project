@@ -47,8 +47,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = (ViewGroup) inflater.inflate(R.layout.home_fragment, container, false);
-
-
         init(view);
         return view;
     }

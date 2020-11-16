@@ -25,6 +25,20 @@
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <Button
+        android:id="@+id/btnArea"
+        android:layout_width="80dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/mapboxBlue"
+        android:gravity="center_horizontal"
+        android:paddingTop="20dp"
+        android:text="@string/btnArea"
+        android:textColor="@color/mapboxWhite"
+        app:layout_constraintEnd_toStartOf="@+id/btnDKU"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
         android:id="@+id/btnDKU"
         android:layout_width="80dp"
         android:layout_height="55dp"
@@ -59,6 +73,22 @@
         android:text="@string/btnStartNavigation"
         android:textColor="@color/mapboxWhite"
         app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintVertical_bias="0.9"
+        mapbox:layout_constraintStart_toStartOf="parent"
+        mapbox:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnStartAR"
+        android:layout_width="180dp"
+        android:layout_height="43dp"
+        android:background="@color/mapboxGrayLight"
+        android:enabled="false"
+        android:text="@string/btnStartAR"
+        android:textColor="@color/mapboxWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toEndOf="@+id/btnStartNavigation"
         app:layout_constraintVertical_bias="0.9"
         mapbox:layout_constraintStart_toStartOf="parent"
         mapbox:layout_constraintTop_toTopOf="parent" />

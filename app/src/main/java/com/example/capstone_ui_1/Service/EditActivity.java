@@ -16,7 +16,6 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.capstone_ui_1.HomeFragment;
-import com.example.capstone_ui_1.MainActivity;
 import com.example.capstone_ui_1.R;
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
@@ -29,15 +28,17 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     public static final int RESULT_OK_DELETE = 3;
 
     private Context context;
-
+    private Button time_table_search_button;
     private Button deleteBtn;
     private Button submitBtn;
+    private Button alarmBtn;
     private EditText subjectEdit;
     private EditText classroomEdit;
     private EditText professorEdit;
     private Spinner daySpinner;
     private TextView startTv;
     private TextView endTv;
+
 
     //request mode
     private int mode;
@@ -50,18 +51,38 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         init();
+
+        time_table_search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FindClassActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent2);
+            }
+        });
     }
 
     private void init(){
         this.context = this;
         deleteBtn = findViewById(R.id.delete_btn);
         submitBtn = findViewById(R.id.submit_btn);
+        alarmBtn = findViewById(R.id.alarm_button);
         subjectEdit = findViewById(R.id.subject_edit);
         classroomEdit = findViewById(R.id.classroom_edit);
         professorEdit = findViewById(R.id.professor_edit);
         daySpinner = findViewById(R.id.day_spinner);
         startTv = findViewById(R.id.start_time);
         endTv = findViewById(R.id.end_time);
+        time_table_search_button = (Button) findViewById(R.id.timetable_search_button);
+
+
 
         //set the default time
         schedule = new Schedule();
@@ -80,11 +101,13 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         if(mode == HomeFragment.REQUEST_EDIT){
             loadScheduleData();
             deleteBtn.setVisibility(View.VISIBLE);
+            alarmBtn.setVisibility(View.VISIBLE);
         }
     }
     private void initView(){
         submitBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
+
 
         daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -162,6 +185,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 setResult(RESULT_OK_DELETE, i);
                 finish();
                 break;
+
         }
     }
 
@@ -181,4 +205,5 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         schedule.setClassPlace(classroomEdit.getText().toString());
         schedule.setProfessorName(professorEdit.getText().toString());
     }
+
 }

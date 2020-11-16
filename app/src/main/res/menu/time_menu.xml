@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item1"
+        android:title="1회"/>
+    <item
+        android:id="@+id/item2"
+        android:title="2회"/>
+    <item
+        android:id="@+id/item3"
+        android:title="3회"/>
+    <item
+        android:id="@+id/item4"
+        android:title="4회"/>
+    <item
+        android:id="@+id/item5"
+        android:title="5회"/>
+</menu>

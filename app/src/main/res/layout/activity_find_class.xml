@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Service.FindClassActivity"
+    android:orientation="vertical">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_top_tool_bar"
@@ -27,7 +29,8 @@
             android:textColor="#354FE4"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="20dp" />
         <TextView
             android:id="@+id/home_top_univ_name_tv"
             android:layout_width="wrap_content"
@@ -63,46 +66,44 @@
             android:src="@drawable/home_frag_mypage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:padding="10dp"
+        android:background="@color/white"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/load_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Load" />
-
-        <Button
-            android:id="@+id/add_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add" />
-
-        <Button
-            android:id="@+id/clear_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear" />
-
-    </LinearLayout>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/autoCompleteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionHint="pick an item" />
+        </LinearLayout>
 
 
 
-    <com.github.tlaabs.timetableview.TimetableView
-        android:id="@+id/timetable"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id = "@+id/layouttest"
         android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="@id/home_top_tool_bar"
+        android:padding="10dp"
+        android:background="@color/white"
         android:layout_height="wrap_content"
-        app:header_title="@array/header_title" />
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id ="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </LinearLayout>

@@ -1,6 +1,9 @@
 package com.example.capstone_ui_1;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Camera;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +92,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
     // Navigation & Button
     private MapboxDirections client;
-    private Button dkuButton, mylocButton, startButton;
+    private Button dkuButton, mylocButton, startButton, arButton, areaButton;
 
     // Navigation
     private Marker destinationMarker;
@@ -101,12 +104,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(getActivity(), getString(R.string.mapbox_access_token));
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.navigation_fragment, container, false);
         mapView = view.findViewById(R.id.mapView);
 
@@ -169,6 +173,57 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                 .build();
                         // Call this method with Context from within an Activity
                         NavigationLauncher.startNavigation(getActivity(), options);
+                    }
+                });
+
+                // TODO : arButton onCLick, setEnable
+                arButton = view.findViewById(R.id.btnStartAR);
+
+                // TODO : areaButton : 학교 구역별 보기, 코드 간략화해보기
+                areaButton = view.findViewById(R.id.btnArea);
+                areaButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 각 구역별 좌표 저장
+                        // 공대, 인문대
+                        double[][] latlngs = {{37.320754, 127.126254}, {37.322298, 127.129150}};
+                        CameraPosition position0 = new CameraPosition.Builder()
+                                                                .target(new LatLng(latlngs[0][0], latlngs[0][1]))
+                                                                .zoom(17)
+                                                                .bearing(180)
+                                                                .tilt(0)
+                                                                .build();
+                        CameraPosition position1 = new CameraPosition.Builder()
+                                                                .target(new LatLng(latlngs[1][0], latlngs[1][1]))
+                                                                .zoom(17)
+                                                                .bearing(180)
+                                                                .tilt(0)
+                                                                .build();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                        dialog.setTitle("어디로 가시나요?")
+                                .setItems(new CharSequence[]{"공대", "인문대"}, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case 0:
+                                                mapboxMap.animateCamera(CameraUpdateFactory
+                                                        .newCameraPosition(position0), 5000);
+                                                break;
+                                            case 1:
+                                                mapboxMap.animateCamera(CameraUpdateFactory
+                                                        .newCameraPosition(position1), 5000);
+                                                break;
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("그냥 지도로 볼래요", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        dialog.show();
                     }
                 });
 
