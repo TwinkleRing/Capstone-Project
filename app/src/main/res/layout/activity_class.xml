@@ -21,9 +21,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="59dp"
             android:gravity="center">
-
 
 
             <TextView
@@ -38,19 +37,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="91dp"
             android:layout_weight="8">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/lecture_list"
                 android:layout_width="match_parent"
-                android:layout_height="554dp">
+                android:layout_height="387dp">
 
             </androidx.recyclerview.widget.RecyclerView>
-
         </LinearLayout>
-
-
     </LinearLayout>
-
 </RelativeLayout>
