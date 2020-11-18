@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.capstone_ui_1.Alarm.AlarmReceiver;
 import com.example.capstone_ui_1.R;
@@ -40,6 +41,7 @@ public class MyService extends Service {
         super.onDestroy();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null) {
@@ -126,6 +128,7 @@ public class MyService extends Service {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void alarm(Calendar cal, Cursor cursor, long calendarTime, long nowTime, long interval, int dayOfWeek) {
         int curCount = cursor.getCount();
         int fiveCurCount = curCount * 5;
@@ -152,7 +155,7 @@ public class MyService extends Service {
                 sender[count] = PendingIntent.getBroadcast(getApplicationContext(), id, intent, 0);
 
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendarTime, sender[count]);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendarTime, sender[count]);
 
                 count++;
             }
