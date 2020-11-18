@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Camera;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
@@ -87,9 +89,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     public static double Lo; // longitude
 
     // 학교 중앙 좌표
-    // 37.321229, 127.127432
-    public static double DKULa = 37.321229;
-    public static double DKULo = 127.127432;
+    // 37.320146, 127.128678
+    public static double DKULa = 37.320146;
+    public static double DKULo = 127.128678;
 
     // Navigation & Button
     private MapboxDirections client;
@@ -121,6 +123,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             public void onMapReady(@NonNull MapboxMap mapboxMap) { ;
                 NavigationFragment.this.mapboxMap = mapboxMap;
                 mapboxMap.addOnMapClickListener(NavigationFragment.this);
+                // mapbox://styles/gouz7514/cke8d56tw4y5v19jv8ecm5l7v
                 mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/gouz7514/cke8d56tw4y5v19jv8ecm5l7v"), new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
@@ -135,13 +138,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                         Log.e(TAG, "dkuButton clicked");
                         CameraPosition position = new CameraPosition.Builder()
                                 .target(new LatLng(DKULa, DKULo)) // Sets the new camera position
-                                .zoom(16) // Sets the zoom , 줌 정도 숫자가 클수록 더많이 줌함
-                                .bearing(180) // Rotate the camera , 카메라 방향(북쪽이 0) 북쪽부터 시계방향으로 측정
+                                .zoom(15) // Sets the zoom , 줌 정도 숫자가 클수록 더많이 줌함
+                                .bearing(160) // Rotate the camera , 카메라 방향(북쪽이 0) 북쪽부터 시계방향으로 측정
                                 .tilt(0) // Set the camera tilt , 각도
                                 .build(); // Creates a CameraPosition from the builder
                         Log.e(TAG, "DKU position : " + position);
 
-                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000);
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 5000);
                         Toast.makeText(getApplicationContext(), String.format("단국대 위치로 이동합니다"), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -158,7 +161,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                 .build(); // Creates a CameraPosition from the builder
                         //카메라 움직이기
                         mapboxMap.animateCamera(CameraUpdateFactory
-                                .newCameraPosition(position), 7000);
+                                .newCameraPosition(position), 5000);
 
                         Toast.makeText(getApplicationContext(), String.format("내 위치로 이동합니다."), Toast.LENGTH_LONG).show();
                     }
@@ -177,7 +180,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                     }
                 });
 
-                // TODO : arButton onCLick, setEnable
                 arButton = view.findViewById(R.id.btnStartAR);
                 arButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -187,32 +189,45 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                     }
                 });
 
-                // TODO : areaButton : 학교 구역별 보기, 코드 간략화해보기
                 areaButton = view.findViewById(R.id.btnArea);
                 areaButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // 각 구역별 좌표 저장
-                        // 공대, 인문대
-                        double[][] latlngs = {{37.320754, 127.126254}, {37.322298, 127.129150}};
+                        // 공대, 인문대, 기숙사, 예체대
+                        double[][] latlngs = {{37.320754, 127.126254}, {37.322298, 127.129150}, {37.315870, 127.126907}, {37.319199, 127.129730}};
                         CameraPosition position0 = new CameraPosition.Builder()
-                                                                .target(new LatLng(latlngs[0][0], latlngs[0][1]))
-                                                                .zoom(17)
-                                                                .bearing(180)
-                                                                .tilt(0)
-                                                                .build();
+                                .target(new LatLng(latlngs[0][0], latlngs[0][1]))
+                                .zoom(17)
+                                .bearing(200)
+                                .tilt(0)
+                                .build();
                         CameraPosition position1 = new CameraPosition.Builder()
-                                                                .target(new LatLng(latlngs[1][0], latlngs[1][1]))
-                                                                .zoom(17)
-                                                                .bearing(180)
-                                                                .tilt(0)
-                                                                .build();
+                                .target(new LatLng(latlngs[1][0], latlngs[1][1]))
+                                .zoom(17)
+                                .bearing(200)
+                                .tilt(0)
+                                .build();
+                        CameraPosition position2 = new CameraPosition.Builder()
+                                .target(new LatLng(latlngs[2][0], latlngs[2][1]))
+                                .zoom(17)
+                                .bearing(200)
+                                .tilt(0)
+                                .build();
+                        CameraPosition position3 = new CameraPosition.Builder()
+                                .target(new LatLng(latlngs[3][0], latlngs[3][1]))
+                                .zoom(16)
+                                .bearing(200)
+                                .tilt(0)
+                                .build();
+
 
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                         dialog.setTitle("어디로 가시나요?")
-                                .setItems(new CharSequence[]{"공대", "인문대"}, new DialogInterface.OnClickListener() {
+                                .setItems(new CharSequence[]{"공대", "인문대", "기숙사", "예체대"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+
                                         switch (which) {
                                             case 0:
                                                 mapboxMap.animateCamera(CameraUpdateFactory
@@ -221,6 +236,14 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                                             case 1:
                                                 mapboxMap.animateCamera(CameraUpdateFactory
                                                         .newCameraPosition(position1), 5000);
+                                                break;
+                                            case 2:
+                                                mapboxMap.animateCamera(CameraUpdateFactory
+                                                        .newCameraPosition(position2), 5000);
+                                                break;
+                                            case 3:
+                                                mapboxMap.animateCamera(CameraUpdateFactory
+                                                        .newCameraPosition(position3), 5000);
                                                 break;
                                         }
                                     }

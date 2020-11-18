@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     NavigationFragment navigationFragment;
     AlarmFragment alarmFragment;
     ClassFragment classFragment;
-    TensorFragment tensorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         navigationFragment = new NavigationFragment();
         classFragment = new ClassFragment();
         alarmFragment = new AlarmFragment();
-        tensorFragment = new TensorFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 
@@ -58,10 +56,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.bottom_navi_navigation: {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, navigationFragment).commitAllowingStateLoss();
-                        break;
-                    }
-                    case R.id.bottom_navi_tensor: {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, tensorFragment).commitAllowingStateLoss();
                         break;
                     }
 
