@@ -482,6 +482,18 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mapView.onDestroy();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
