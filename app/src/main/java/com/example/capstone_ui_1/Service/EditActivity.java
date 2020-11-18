@@ -30,6 +30,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context context;
     private Button time_table_search_button;
+    private Button alarmBtn;
     private Button deleteBtn;
     private Button submitBtn;
     private EditText subjectEdit;
@@ -70,7 +71,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         startTv = findViewById(R.id.start_time);
         endTv = findViewById(R.id.end_time);
         time_table_search_button = (Button) findViewById(R.id.timetable_search_button);
-
+        alarmBtn = (Button) findViewById(R.id.alarm_btn);
 
         //set the default time
         schedule = new Schedule();
@@ -89,11 +90,23 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         if(mode == HomeFragment.REQUEST_EDIT){
             loadScheduleData();
             deleteBtn.setVisibility(View.VISIBLE);
+            alarmBtn.setVisibility(View.VISIBLE);
         }
     }
     private void initView(){
         submitBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
+        alarmBtn.setOnClickListener(this);
+
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), SettingActivity.class);
+                startActivity(intent2);
+
+                finish();
+            }
+        });
 
         daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
