@@ -17,6 +17,9 @@
 
         <activity android:name=".Service.PopupActivity" android:theme="@android:style/Theme.Holo.Dialog" />
         <activity android:name=".Service.FindClassActivity" />
+        <activity android:name=".Service.ClassActivity" />
+        <activity android:name=".Service.SelectingActivity" />
+        <activity android:name=".Service.SettingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
