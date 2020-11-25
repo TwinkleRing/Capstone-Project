@@ -124,10 +124,21 @@ public class FindClassActivity extends AppCompatActivity{
                                 i.putExtra("classname", list.getClassname());
                                 i.putExtra("classroom", list.getClassroom());
                                 i.putExtra("professor", list.getProfessor());
-                                i.putExtra("time", list.getTime());
+
+                                i.putExtra("day1", list.getDay_1());
+                                i.putExtra("day1_start_time", list.getDay1_start_time());
+                                i.putExtra("day1_end_time", list.getDay1_end_time());
+
+                                i.putExtra("day2", list.getDay_2());
+                                i.putExtra("day2_start_time", list.getDay2_start_time());
+                                i.putExtra("day2_end_time", list.getDay2_end_time());
+
+
+
                                 i.putExtra("schedule", schedule);
                                 Log.e("find_intent", (String) i.getExtras().get("classname"));
                                 Log.e("find_intent", (String) i.getExtras().get("professor"));
+                                Log.e("find_intent", "" + (list.getDay_1()));
                                 setResult(FIND_OK_CODE, i);
                                 // 여기는 전부 아무 문제 없이 실행됨
 

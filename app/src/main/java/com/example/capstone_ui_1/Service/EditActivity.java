@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.capstone_ui_1.Adapter.CustomAdapter;
 import com.example.capstone_ui_1.HomeFragment;
 import com.example.capstone_ui_1.MainActivity;
+
 import com.example.capstone_ui_1.R;
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
@@ -87,6 +88,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         Log.e("Edit_onActivityResult", "onActivityResult 실행됨");
         Log.e("EditAct_requestCode", String.valueOf(requestCode));
         Log.e("EditAct_resultCode", String.valueOf(resultCode));
+
         super.onActivityResult(requestCode, resultCode, data);
 //        if (resultCode == FindClassActivity.FIND_OK_CODE && requestCode == EDIT_REQUEST_ADD) {
 //            setResult(FindClassActivity.FIND_OK_CODE, data);
@@ -115,9 +117,18 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("data_test", data.getStringExtra("classname"));
                     Log.e("data_test", data.getStringExtra("classroom"));
                     Log.e("data_test", data.getStringExtra("professor"));
+//                    Log.e("data_test", data.getStringExtra("day1"));
                     subjectEdit.setText(data.getStringExtra("classname"));
                     classroomEdit.setText(data.getStringExtra("classroom"));
                     professorEdit.setText(data.getStringExtra("professor"));
+                    daySpinner.setSelection(Integer.parseInt(String.valueOf(data.getLongExtra("day1",0)))-1);
+                    String[] hourandminute = timeProcessing(data.getStringExtra("day1_start_time"));
+                    startTv.setText(hourandminute[0] + ":" + hourandminute[1]);
+                    schedule.setStartTime(new Time(Integer.parseInt(hourandminute[0]),Integer.parseInt(hourandminute[1])));
+
+                    String[] hourandminute2 = timeProcessing(data.getStringExtra("day1_end_time"));
+                    endTv.setText(hourandminute2[0] + ":" + hourandminute2[1]);
+                    schedule.setEndTime(new Time(Integer.parseInt(hourandminute2[0]),Integer.parseInt(hourandminute2[1])));
                     break;
             }
         }
@@ -163,10 +174,22 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         String get_classname = test.getStringExtra("classname");
         String get_professor = test.getStringExtra("professor");
 
+//        long get_day1 = test.getExtra("day1",3);
+
+        int get_day1 = Integer.parseInt(String.valueOf(test.getLongExtra("day1",0)));
+        String get_day1_start_time = test.getStringExtra("day1_start_time");
+        String get_day1_end_time = test.getStringExtra("day1_end_time");
+
+        long get_day2 = test.getIntExtra("day2", 0);
+        String get_day2_start_time = test.getStringExtra("day2_start_time");
+        String get_day2_end_time = test.getStringExtra("day2_end_time");
+
         subjectEdit.setText(get_classname);
         classroomEdit.setText(get_classroom);
         professorEdit.setText(get_professor);
 
+        Log.e("test", get_day1 + "");
+        daySpinner.setSelection(get_day1);
 
         submitBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
@@ -330,5 +353,22 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         schedule.setClassTitle(subjectEdit.getText().toString());
         schedule.setClassPlace(classroomEdit.getText().toString());
         schedule.setProfessorName(professorEdit.getText().toString());
+    }
+
+    private String[] timeProcessing(String s){
+        String[] test = new String[2];
+        String target = ":";
+        String result;
+        String minute;
+        String hour;
+        int target_num = s.indexOf(target);
+        hour = s.substring(0,target_num);
+        minute = s.substring(target_num+1);
+        test[0] = hour;
+        test[1] = minute;
+
+
+
+        return test;
     }
 }
