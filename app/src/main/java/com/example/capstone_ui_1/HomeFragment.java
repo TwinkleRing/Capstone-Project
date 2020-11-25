@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.capstone_ui_1.Service.FindClassActivity;
+import com.example.capstone_ui_1.Service.PopupActivity;
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
 import com.github.tlaabs.timetableview.TimetableView;
@@ -28,8 +31,8 @@ import static android.view.ViewGroup.*;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private Context context;
-    public static final int REQUEST_ADD = 1;
-    public static final int REQUEST_EDIT = 2;
+    public static final int HOME_REQUEST_ADD = 1;
+    public static final int HOME_REQUEST_EDIT = 2;
 
     private Button addBtn;
     private Button clearBtn;
@@ -41,14 +44,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = (ViewGroup) inflater.inflate(R.layout.home_fragment, container, false);
-
-
         init(view);
         return view;
     }
@@ -74,19 +74,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         timetable.setOnStickerSelectEventListener((idx, schedules) -> {
             Intent i = new Intent(getView().getContext(), EditActivity.class);
-            i.putExtra("mode",REQUEST_EDIT);
+            i.putExtra("mode",HOME_REQUEST_EDIT);
             i.putExtra("idx", idx);
             i.putExtra("schedules", schedules);
-            startActivityForResult(i,REQUEST_EDIT);
+            startActivityForResult(i, HOME_REQUEST_EDIT);
         });
+        // 11/17 추가
+//        timetable.setOnStickerSelectEventListener((idx, schedules) -> {
+//            Intent j = new Intent(getView().getContext(), FindClassActivity.class);
+//            j.putExtra("mode",REQUEST_EDIT);
+//            j.putExtra("idx", idx);
+//            j.putExtra("schedules", schedules);
+//            startActivityForResult(j,REQUEST_EDIT);
+//        });
     }
 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_btn:
                 Intent i = new Intent(getActivity(),EditActivity.class);
-                i.putExtra("mode",REQUEST_ADD);
-                startActivityForResult(i,REQUEST_ADD);
+                i.putExtra("mode", HOME_REQUEST_ADD);
+                Log.e("Log test", "HomeFragment에서 added");
+                startActivityForResult(i, HOME_REQUEST_ADD); // 여기는 문제 없음
+                // 11/17 추가
+//                Intent j = new Intent(getActivity(),FindClassActivity.class);
+//                j.putExtra("mode",REQUEST_ADD);
+//                startActivityForResult(j,REQUEST_ADD);
                 break;
             case R.id.clear_btn:
                 timetable.removeAll();
@@ -102,24 +115,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    // EditActivity에서 처리된 결과를 받는 메소드
+    // 처리된 결과 (resultCode)가 EditActivity.RESULT_OK_ADD이면 requestCode를 판별해 결과 처리를 진행
+    // 처리 결과를 item으로 선언해서 timetable에 더한다.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("Home_onActivityResult", "onActivityResult 실행됨");
         switch (requestCode){
-            case REQUEST_ADD:
-                if(resultCode == EditActivity.RESULT_OK_ADD){
+            case HOME_REQUEST_ADD:
+                if(resultCode == EditActivity.EDIT_OK_ADD){
                     ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra("schedules");
+                    Log.e("HomeFragment_resultCode", String.valueOf(resultCode));
                     timetable.add(item);
                 }
                 break;
-            case REQUEST_EDIT:
+            case HOME_REQUEST_EDIT:
                 /** Edit -> Submit */
-                if(resultCode == EditActivity.RESULT_OK_EDIT){
+                if(resultCode == EditActivity.EDIT_OK_EDIT){
                     int idx = data.getIntExtra("idx",-1);
                     ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra("schedules");
                     timetable.edit(idx,item);
                 }
                 /** Edit -> Delete */
-                else if(resultCode == EditActivity.RESULT_OK_DELETE){
+                else if(resultCode == EditActivity.EDIT_OK_DELETE){
                     int idx = data.getIntExtra("idx",-1);
                     timetable.remove(idx);
                 }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
 
-    <include layout="@layout/edit_appbar" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,13 +33,13 @@
             android:hint="Professor" />
 
         <include layout="@layout/time_box"/>
-
+        <include layout="@layout/edit_appbar" />
     </LinearLayout>
     <Button
         android:id="@+id/timetable_search_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="시간표로 검색하기"/>
 
