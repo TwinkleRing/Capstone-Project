@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.alarm_clock2).setContentTitle("알단지").setContentText("강의가 곧 시작합니다.")
+        builder.setSmallIcon(R.drawable.alarm_clock3).setContentTitle("알단지").setContentText("강의가 곧 시작합니다.")
                 .setWhen(Calendar.getInstance().getTimeInMillis())
                 .setContentIntent(pendingIntent).setAutoCancel(true);
 
