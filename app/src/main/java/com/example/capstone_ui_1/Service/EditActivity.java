@@ -26,6 +26,8 @@ import com.github.tlaabs.timetableview.Time;
 
 import java.util.ArrayList;
 
+import static com.example.capstone_ui_1.Adapter.CustomAdapter.RESULT_OK_EDIT;
+
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
     // HomeFragment 와 통신
     public static final int EDIT_OK_ADD = 10;
@@ -129,6 +131,29 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     endTv.setText(hourandminute2[0] + ":" + hourandminute2[1]);
                     schedule.setEndTime(new Time(Integer.parseInt(hourandminute2[0]),Integer.parseInt(hourandminute2[1])));
                     break;
+
+                case EDIT_REQUEST_EDIT:
+//                case EDIT_REQUEST_EDIT:
+//                    // 이 부분 수정해야 함
+//                    Intent i = getIntent();
+//                    int idx = i.getIntExtra("idx", 0);
+//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras()));
+//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("professor")));
+//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("classname")));
+//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("classroom")));
+//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("schedule")));
+//                    ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra("schedules");
+//                    Log.e("Edit_schedules", String.valueOf(schedules));
+//                    schedule = schedules.get(idx);
+//                    subjectEdit.setText(schedule.getClassTitle());
+//                    classroomEdit.setText(schedule.getClassPlace());
+//                    professorEdit.setText(schedule.getProfessorName());
+//                    daySpinner.setSelection(schedule.getDay());
+//                    Log.e("data_test", data.getStringExtra("classname"));
+//                    Log.e("data_test", data.getStringExtra("classroom"));
+//                    Log.e("data_test", data.getStringExtra("professor"));
+////                    Log.e("data_test", data.getStringExtra("day1"));
+
             }
         }
     }
@@ -159,8 +184,9 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private void checkMode(){
         Intent i = getIntent();
         mode = i.getIntExtra("mode", HomeFragment.HOME_REQUEST_ADD);
-
+        Log.d("what is mode?", "" + mode);
         if(mode == HomeFragment.HOME_REQUEST_EDIT){
+            Log.d("here come?", "" + mode);
             loadScheduleData();
             deleteBtn.setVisibility(View.VISIBLE);
         }
@@ -181,15 +207,19 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         String get_day2_start_time = test.getStringExtra("day2_start_time");
         String get_day2_end_time = test.getStringExtra("day2_end_time");
 
-        subjectEdit.setText(get_classname);
-        classroomEdit.setText(get_classroom);
-        professorEdit.setText(get_professor);
+        subjectEdit.setText(schedule.getClassTitle());
+        classroomEdit.setText(schedule.getClassPlace());
+        professorEdit.setText(schedule.getProfessorName());
 
         Log.e("test", get_day1 + "");
-        daySpinner.setSelection(get_day1);
+        daySpinner.setSelection(schedule.getDay());
 
         submitBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
+
+        startTv.setText(schedule.getStartTime().getHour() + ":" + schedule.getStartTime().getMinute());
+        endTv.setText(schedule.getEndTime().getHour() + ":" + schedule.getEndTime().getMinute());
+
 
         daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -272,7 +302,17 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     i.putExtra("schedules",schedules);
                     setResult(EDIT_OK_ADD, i);
                     finish();
-                } else {
+                }else if(mode == HomeFragment.HOME_REQUEST_EDIT){
+                    inputDataProcessing();
+                    Intent i = new Intent();
+                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+                    schedules.add(schedule);
+                    i.putExtra("idx",editIdx);
+                    i.putExtra("schedules",schedules);
+                    setResult(RESULT_OK_EDIT,i);
+                    finish();
+                }
+                else {
                     Log.e("Edit_mode", String.valueOf(mode));
                     inputDataProcessing();
                     // 결과를 Intent에 담아서 HomeFragment로 전달하고 현재 Activity는 종료
@@ -327,7 +367,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = getIntent();
         editIdx = i.getIntExtra("idx",-1);
         ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra("schedules");
-        schedule = schedules.get(0);
+        schedule = schedules.get(editIdx);
+        Log.d("edit class", "" + schedule.getClassTitle());
         subjectEdit.setText(schedule.getClassTitle());
         classroomEdit.setText(schedule.getClassPlace());
         professorEdit.setText(schedule.getProfessorName());

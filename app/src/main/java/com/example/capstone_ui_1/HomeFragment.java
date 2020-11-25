@@ -72,13 +72,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         saveBtn.setOnClickListener(this);
         loadBtn.setOnClickListener(this);
 
-        timetable.setOnStickerSelectEventListener((idx, schedules) -> {
-            Intent i = new Intent(getView().getContext(), EditActivity.class);
-            i.putExtra("mode",HOME_REQUEST_EDIT);
-            i.putExtra("idx", idx);
-            i.putExtra("schedules", schedules);
-            startActivityForResult(i, HOME_REQUEST_EDIT);
+        timetable.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
+            @Override
+            public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
+                Intent i = new Intent(getView().getContext(), EditActivity.class);
+                i.putExtra("mode",HOME_REQUEST_EDIT);
+                i.putExtra("idx", idx);
+                i.putExtra("schedules", schedules);
+                startActivityForResult(i, HOME_REQUEST_EDIT);
+            }
         });
+
+
         // 11/17 추가
 //        timetable.setOnStickerSelectEventListener((idx, schedules) -> {
 //            Intent j = new Intent(getView().getContext(), FindClassActivity.class);
