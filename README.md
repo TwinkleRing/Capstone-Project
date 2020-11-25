@@ -1,4 +1,4 @@
-# Capstone_Ui
+# Capstone_Project
 
 2020/10/16 1. Ui
 

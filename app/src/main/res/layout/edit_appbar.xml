@@ -20,6 +20,12 @@
             android:layout_height="wrap_content"
             android:text="submit"
             />
+        <Button
+            android:id="@+id/alarm_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="알람 설정"/>
 
 
     </LinearLayout>

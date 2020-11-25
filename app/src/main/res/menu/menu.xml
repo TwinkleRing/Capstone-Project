@@ -14,12 +14,8 @@
         android:title="알림" />
     <item
         android:id="@+id/bottom_navi_navigation"
-        android:icon="@drawable/bottomview_timetable_removebg1"
+        android:icon="@drawable/navigation_icon"
         android:title="네비게이션"/>
-    <item
-        android:id="@+id/bottom_navi_tensor"
-        android:icon="@drawable/bottomview_campuspick_removebg1"
-        android:title="추가 예정"/>
 
 
 </menu>
