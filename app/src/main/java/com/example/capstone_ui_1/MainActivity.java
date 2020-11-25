@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment;
     NavigationFragment navigationFragment;
-    AlarmFragment alarmFragment;
-    ClassFragment classFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         homeFragment = new HomeFragment();
         navigationFragment = new NavigationFragment();
-        classFragment = new ClassFragment();
-        alarmFragment = new AlarmFragment();
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 

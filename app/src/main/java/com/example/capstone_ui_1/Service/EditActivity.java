@@ -39,6 +39,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     public static final int EDIT_POP_CODE = 10000;
 
     private Context context;
+    private Button alarmBtn;
     private Button time_table_search_button;
     private Button deleteBtn;
     private Button submitBtn;
@@ -132,7 +133,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         daySpinner = findViewById(R.id.day_spinner);
         startTv = findViewById(R.id.start_time);
         endTv = findViewById(R.id.end_time);
-        time_table_search_button = findViewById(R.id.timetable_search_button);
+        alarmBtn = (Button) findViewById(R.id.alarm_btn);
+        time_table_search_button = (Button) findViewById(R.id.timetable_search_button);
 
 
         //set the default time
@@ -152,6 +154,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         if(mode == HomeFragment.HOME_REQUEST_EDIT){
             loadScheduleData();
             deleteBtn.setVisibility(View.VISIBLE);
+            alarmBtn.setVisibility(View.VISIBLE);
         }
     }
     private void initView(){
@@ -167,6 +170,18 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
         submitBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
+        alarmBtn.setOnClickListener(this);
+
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), SettingActivity.class);
+                intent2.putExtra("className",schedule.getClassTitle());
+                startActivity(intent2);
+                finish();
+            }
+        });
+
 
         daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

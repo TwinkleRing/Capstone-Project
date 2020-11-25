@@ -2,7 +2,6 @@ package com.example.capstone_ui_1.Service;
 
 public class ListItem {
 
-
     int classId;
     String className;
     String startDate;

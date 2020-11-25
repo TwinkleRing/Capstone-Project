@@ -167,14 +167,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="#90caf9">
+            android:background="#FFFFFF">
 
             <ImageView
                 android:id="@+id/btn_go_setting"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:gravity="center"
-                android:src="@drawable/btn_go_setting"/>
+                android:src="@drawable/ellipsis"/>
 
         </LinearLayout>
 

@@ -16,7 +16,6 @@ import com.example.capstone_ui_1.R;
 import java.util.ArrayList;
 
 public class SelectingActivity extends AppCompatActivity {
-    Button btn_plus_fill;
     RecyclerView rv_list;
     ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
     ArrayList<ListItem> selectingList = new ArrayList<>();
@@ -27,18 +26,6 @@ public class SelectingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selecting);
-
-        btn_plus_fill = (Button) findViewById(R.id.btn_plus_fill);
-
-        btn_plus_fill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(intent);
-
-                finish();
-            }
-        });
 
         myHelper = new MyDBHelper(this);
 
