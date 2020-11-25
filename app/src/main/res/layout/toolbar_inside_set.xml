@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_back_set"
+            android:id="@+id/btn_back"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/btn_back"
@@ -26,9 +26,9 @@
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_width="65dp"
+            android:layout_height="28dp"
+            android:background="@drawable/primary_border_fill_7"
             android:text="저장" />
 
     </LinearLayout>

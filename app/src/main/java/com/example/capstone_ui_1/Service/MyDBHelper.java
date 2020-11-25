@@ -21,7 +21,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
                 "mon INTEGER, tue INTEGER, wed INTEGER, thu INTEGER," +
                 "fri INTEGER, sat INTEGER, sun INTEGER);");
 
-        db.execSQL("CREATE TABLE time (timeId INTEGER PRIMARY KEY AUTOINCREMENT, oneTime TEXT NOT NULL, twoTime TEXT, threeTime TEXT, " +
+        db.execSQL("CREATE TABLE time (timeId INTEGER PRIMARY KEY AUTOINCREMENT, oneTime TEXT NOT NULL, " +
+                "twoTime TEXT, threeTime TEXT, " +
                 "fourTime TEXT, fiveTime TEXT, " +
                 "FOREIGN KEY(timeId) REFERENCES class(classId));");
     }

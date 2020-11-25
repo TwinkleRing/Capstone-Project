@@ -25,10 +25,10 @@
             android:layout_weight="1"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="28dp"
             android:text="수정"
-            android:background="@android:color/transparent"
+            android:background="@drawable/primary_border_fill_7"
             android:id="@+id/btn_modify"/>
 
     </LinearLayout>

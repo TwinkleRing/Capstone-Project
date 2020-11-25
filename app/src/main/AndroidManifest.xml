@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,8 +19,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service android:name=".Service.MyService">
+            <intent-filter>
+                <action android:name="com.example.capstone_ui_1.MyService"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Service.ModifyActivity"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".Service.SettingActivity"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <receiver android:name=".Alarm.AlarmReceiver"/>
+
         <activity android:name=".Service.PopupActivity" android:theme="@android:style/Theme.Holo.Dialog" />
         <activity android:name=".Service.FindClassActivity" />
+        <activity android:name=".Service.ClassActivity" />
+        <activity android:name=".Service.SelectingActivity" />
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

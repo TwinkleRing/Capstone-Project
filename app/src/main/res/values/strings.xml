@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My CapstoneUI</string>
+    <string name="app_name">알단지</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZ291ejc1MTQiLCJhIjoiY2thbzFxOTg0MTU1ejJ4bG85dm1zbTg3biJ9.jAXS_jXPQusNugc_430LfA</string>
     <string name="btnDKU">단국대 지도</string>
     <string name="btnMyLoc">내 위치</string>

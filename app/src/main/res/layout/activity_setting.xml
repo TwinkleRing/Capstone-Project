@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/toolbar_inside_set"
-            layout="@layout/toolbar_inside_set"/>
+            layout="@layout/toolbar_inside_set" />
 
     </LinearLayout>
 
@@ -43,13 +43,12 @@
                     android:gravity="center">
 
                     <EditText
+
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-                        android:layout_marginLeft="15dp"
+                        android:gravity="center_horizontal"
                         android:layout_marginTop="5dp"
-
                         android:background="@android:color/transparent"
                         android:hint="강의 명을 설정하세요"
                         android:textSize="23dp" />
@@ -76,7 +75,6 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:enabled="false"
-                        android:hint=" 설정하세요"
                         android:textSize="18dp" />
 
                     <Button
@@ -84,7 +82,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
+                        android:background="@drawable/primary_border_fill_8"
                         android:text="설정"
+                        android:textColor="#FFFFFF"
                         android:textSize="15dp" />
 
                 </LinearLayout>
@@ -109,7 +109,6 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:enabled="false"
-                        android:hint=" 설정하세요"
                         android:textSize="18dp" />
 
                     <Button
@@ -117,7 +116,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
+                        android:background="@drawable/primary_border_fill_8"
                         android:text="설정"
+                        android:textColor="#FFFFFF"
                         android:textSize="15dp" />
 
                 </LinearLayout>
@@ -134,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:layout_weight="1"
-                        android:text="요일"
+                        android:text="요일 선택"
                         android:textSize="15dp" />
 
                 </LinearLayout>
@@ -219,7 +220,7 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:paddingLeft="10dp"
-                        android:text="시간 : 버튼을 길게 누르세요 -->>>"
+                        android:text="시간 : 버튼을 길게 누르세요"
                         android:textSize="17dp" />
 
                     <TextView
@@ -235,6 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:text="알람 횟수"
+                        android:background="@drawable/primary_border_fill_7"
                         android:textSize="15dp" />
 
                 </LinearLayout>
