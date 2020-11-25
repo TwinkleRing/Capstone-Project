@@ -1,0 +1,783 @@
+Index: app/src/main/java/com/example/capstone_ui_1/HomeFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.capstone_ui_1;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.preference.PreferenceManager;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\n\r\nimport com.github.tlaabs.timetableview.Schedule;\r\nimport com.github.tlaabs.timetableview.Time;\r\nimport com.github.tlaabs.timetableview.TimetableView;\r\nimport com.example.capstone_ui_1.Service.EditActivity;\r\nimport com.example.capstone_ui_1.R;\r\n\r\nimport java.util.ArrayList;\r\n\r\nimport static android.view.ViewGroup.*;\r\n\r\npublic class HomeFragment extends Fragment implements View.OnClickListener {\r\n    private Context context;\r\n    public static final int REQUEST_ADD = 1;\r\n    public static final int REQUEST_EDIT = 2;\r\n\r\n    private Button addBtn;\r\n    private Button clearBtn;\r\n    private Button saveBtn;\r\n    private Button loadBtn;\r\n\r\n    private  TimetableView timetable;\r\n\r\n    @Override\r\n    public void onStart() {\r\n        super.onStart();\r\n\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {\r\n        View view = (ViewGroup) inflater.inflate(R.layout.home_fragment, container, false);\r\n\r\n\r\n        init(view);\r\n        return view;\r\n    }\r\n\r\n\r\n\r\n    private void init(View v){\r\n        addBtn = (Button) v.findViewById(R.id.add_btn);\r\n        clearBtn = (Button) v.findViewById(R.id.clear_btn);\r\n        saveBtn = (Button) v.findViewById(R.id.save_btn);\r\n        loadBtn = (Button) v.findViewById(R.id.load_btn);\r\n\r\n        timetable = (TimetableView) v.findViewById(R.id.timetable);\r\n//        timetable.setHeaderHighlight(2);\r\n        initView();\r\n    }\r\n\r\n    private void initView(){\r\n        addBtn.setOnClickListener(this);\r\n        clearBtn.setOnClickListener(this);\r\n        saveBtn.setOnClickListener(this);\r\n        loadBtn.setOnClickListener(this);\r\n\r\n        timetable.setOnStickerSelectEventListener((idx, schedules) -> {\r\n            Intent i = new Intent(getView().getContext(), EditActivity.class);\r\n            i.putExtra(\"mode\",REQUEST_EDIT);\r\n            i.putExtra(\"idx\", idx);\r\n            i.putExtra(\"schedules\", schedules);\r\n            startActivityForResult(i,REQUEST_EDIT);\r\n        });\r\n    }\r\n\r\n    public void onClick(View v) {\r\n        switch (v.getId()){\r\n            case R.id.add_btn:\r\n                Intent i = new Intent(getActivity(),EditActivity.class);\r\n                i.putExtra(\"mode\",REQUEST_ADD);\r\n                startActivityForResult(i,REQUEST_ADD);\r\n                break;\r\n            case R.id.clear_btn:\r\n                timetable.removeAll();\r\n                break;\r\n            case R.id.save_btn:\r\n                saveByPreference(timetable.createSaveData());\r\n                break;\r\n            case R.id.load_btn:\r\n                loadSavedData();\r\n                break;\r\n            default:\r\n                throw new IllegalStateException(\"Unexpected value: \" + v.getId());\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        switch (requestCode){\r\n            case REQUEST_ADD:\r\n                if(resultCode == EditActivity.RESULT_OK_ADD){\r\n                    ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra(\"schedules\");\r\n                    timetable.add(item);\r\n                }\r\n                break;\r\n            case REQUEST_EDIT:\r\n                /** Edit -> Submit */\r\n                if(resultCode == EditActivity.RESULT_OK_EDIT){\r\n                    int idx = data.getIntExtra(\"idx\",-1);\r\n                    ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra(\"schedules\");\r\n                    timetable.edit(idx,item);\r\n                }\r\n                /** Edit -> Delete */\r\n                else if(resultCode == EditActivity.RESULT_OK_DELETE){\r\n                    int idx = data.getIntExtra(\"idx\",-1);\r\n                    timetable.remove(idx);\r\n                }\r\n                break;\r\n        }\r\n    }\r\n\r\n    /** save timetableView's data to SharedPreferences in json format */\r\n    private void saveByPreference(String data){\r\n        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());\r\n        SharedPreferences.Editor editor = mPref.edit();\r\n        editor.putString(\"timetable_demo\",data);\r\n        editor.commit();\r\n        Toast.makeText(getActivity(),\"saved!\",Toast.LENGTH_SHORT).show();\r\n    }\r\n\r\n    /** get json data from SharedPreferences and then restore the timetable */\r\n    private void loadSavedData(){\r\n        timetable.removeAll();\r\n        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());\r\n        String savedData = mPref.getString(\"timetable_demo\",\"\");\r\n        if(savedData == null && savedData.equals(\"\")) return;\r\n        timetable.load(savedData);\r\n        Toast.makeText(getActivity(),\"loaded!\",Toast.LENGTH_SHORT).show();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/capstone_ui_1/HomeFragment.java	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/java/com/example/capstone_ui_1/HomeFragment.java	(date 1606278536959)
+@@ -5,6 +5,7 @@
+ import android.content.SharedPreferences;
+ import android.preference.PreferenceManager;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -16,6 +17,8 @@
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.fragment.app.Fragment;
+ 
++import com.example.capstone_ui_1.Service.FindClassActivity;
++import com.example.capstone_ui_1.Service.PopupActivity;
+ import com.github.tlaabs.timetableview.Schedule;
+ import com.github.tlaabs.timetableview.Time;
+ import com.github.tlaabs.timetableview.TimetableView;
+@@ -28,8 +31,8 @@
+ 
+ public class HomeFragment extends Fragment implements View.OnClickListener {
+     private Context context;
+-    public static final int REQUEST_ADD = 1;
+-    public static final int REQUEST_EDIT = 2;
++    public static final int HOME_REQUEST_ADD = 1;
++    public static final int HOME_REQUEST_EDIT = 2;
+ 
+     private Button addBtn;
+     private Button clearBtn;
+@@ -41,14 +44,11 @@
+     @Override
+     public void onStart() {
+         super.onStart();
+-
+     }
+ 
+     @Override
+     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         View view = (ViewGroup) inflater.inflate(R.layout.home_fragment, container, false);
+-
+-
+         init(view);
+         return view;
+     }
+@@ -74,19 +74,32 @@
+ 
+         timetable.setOnStickerSelectEventListener((idx, schedules) -> {
+             Intent i = new Intent(getView().getContext(), EditActivity.class);
+-            i.putExtra("mode",REQUEST_EDIT);
++            i.putExtra("mode",HOME_REQUEST_EDIT);
+             i.putExtra("idx", idx);
+             i.putExtra("schedules", schedules);
+-            startActivityForResult(i,REQUEST_EDIT);
++            startActivityForResult(i, HOME_REQUEST_EDIT);
+         });
++        // 11/17 추가
++//        timetable.setOnStickerSelectEventListener((idx, schedules) -> {
++//            Intent j = new Intent(getView().getContext(), FindClassActivity.class);
++//            j.putExtra("mode",REQUEST_EDIT);
++//            j.putExtra("idx", idx);
++//            j.putExtra("schedules", schedules);
++//            startActivityForResult(j,REQUEST_EDIT);
++//        });
+     }
+ 
+     public void onClick(View v) {
+         switch (v.getId()){
+             case R.id.add_btn:
+                 Intent i = new Intent(getActivity(),EditActivity.class);
+-                i.putExtra("mode",REQUEST_ADD);
+-                startActivityForResult(i,REQUEST_ADD);
++                i.putExtra("mode", HOME_REQUEST_ADD);
++                Log.e("Log test", "HomeFragment에서 added");
++                startActivityForResult(i, HOME_REQUEST_ADD); // 여기는 문제 없음
++                // 11/17 추가
++//                Intent j = new Intent(getActivity(),FindClassActivity.class);
++//                j.putExtra("mode",REQUEST_ADD);
++//                startActivityForResult(j,REQUEST_ADD);
+                 break;
+             case R.id.clear_btn:
+                 timetable.removeAll();
+@@ -102,24 +115,29 @@
+         }
+     }
+ 
++    // EditActivity에서 처리된 결과를 받는 메소드
++    // 처리된 결과 (resultCode)가 EditActivity.RESULT_OK_ADD이면 requestCode를 판별해 결과 처리를 진행
++    // 처리 결과를 item으로 선언해서 timetable에 더한다.
+     @Override
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
++        Log.e("Home_onActivityResult", "onActivityResult 실행됨");
+         switch (requestCode){
+-            case REQUEST_ADD:
+-                if(resultCode == EditActivity.RESULT_OK_ADD){
++            case HOME_REQUEST_ADD:
++                if(resultCode == EditActivity.EDIT_OK_ADD){
+                     ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra("schedules");
++                    Log.e("HomeFragment_resultCode", String.valueOf(resultCode));
+                     timetable.add(item);
+                 }
+                 break;
+-            case REQUEST_EDIT:
++            case HOME_REQUEST_EDIT:
+                 /** Edit -> Submit */
+-                if(resultCode == EditActivity.RESULT_OK_EDIT){
++                if(resultCode == EditActivity.EDIT_OK_EDIT){
+                     int idx = data.getIntExtra("idx",-1);
+                     ArrayList<Schedule> item = (ArrayList<Schedule>)data.getSerializableExtra("schedules");
+                     timetable.edit(idx,item);
+                 }
+                 /** Edit -> Delete */
+-                else if(resultCode == EditActivity.RESULT_OK_DELETE){
++                else if(resultCode == EditActivity.EDIT_OK_DELETE){
+                     int idx = data.getIntExtra("idx",-1);
+                     timetable.remove(idx);
+                 }
+Index: app/src/main/java/com/example/capstone_ui_1/Service/FindClassActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.capstone_ui_1.Service;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.content.Context;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.AutoCompleteTextView;\r\nimport android.widget.EditText;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.SearchView;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.capstone_ui_1.Adapter.CustomAdapter;\r\nimport com.example.capstone_ui_1.FireDB.junkonglist;\r\nimport com.example.capstone_ui_1.R;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.Query;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport org.w3c.dom.Text;\r\n\r\nimport java.util.ArrayList;\r\n\r\nimport static android.widget.Toast.makeText;\r\n\r\npublic class FindClassActivity extends AppCompatActivity{\r\n    private static final String TAG = \".FindClassActivity\";\r\n    private RecyclerView recyclerView;\r\n    private RecyclerView.Adapter adapter;\r\n    private RecyclerView.LayoutManager layoutManager;\r\n    private ArrayList<junkonglist> arrayList;\r\n    private ArrayList<junkonglist> array_get;\r\n    private ArrayList<String> old_array_get;\r\n    private FirebaseDatabase database;\r\n    private DatabaseReference databaseReference;\r\n    private boolean lastItemVisibleFlag = false;\r\n    private ProgressBar progressBar;\r\n    private final int OFFSET = 20;\r\n    private int page = 0;\r\n    private boolean mLockListView = false;\r\n    private String oldestPostId;\r\n    private Context context;\r\n    private Query query;\r\n    private String stored_grade;\r\n    private androidx.appcompat.widget.SearchView autoCompleteTextView;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_find_class);\r\n\r\n        recyclerView = findViewById(R.id.recyclerView);\r\n        recyclerView.setHasFixedSize(true);\r\n        layoutManager = new LinearLayoutManager(this);\r\n        recyclerView.setLayoutManager(layoutManager);\r\n        arrayList = new ArrayList<>();\r\n        array_get = new ArrayList<>();\r\n        old_array_get = new ArrayList<String>();\r\n        database = FirebaseDatabase.getInstance();\r\n//        stored_grade = \"2학년\";\r\n        autoCompleteTextView = (androidx.appcompat.widget.SearchView) findViewById(R.id.autoCompleteText);\r\n        databaseReference = database.getReference().child(\"junkong\");\r\n        autoCompleteTextView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {\r\n            @Override\r\n            public boolean onQueryTextSubmit(String s) {\r\n                query = databaseReference.orderByChild(\"classname\").equalTo(s);\r\n                query.addListenerForSingleValueEvent(new ValueEventListener() {\r\n                    @Override\r\n                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {\r\n                        arrayList.clear();\r\n                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {\r\n\r\n                            arrayList.add(0,snapshot.getValue(junkonglist.class));\r\n                            array_get.add(0,snapshot.getValue(junkonglist.class));\r\n                            old_array_get.add(snapshot.getKey());\r\n                        }\r\n//                oldestPostId = old_array_get.get(0);\r\n                        adapter = new CustomAdapter(arrayList, context);\r\n\r\n                        recyclerView.setAdapter(adapter);\r\n\r\n                    }\r\n\r\n                    @Override\r\n                    public void onCancelled(@NonNull DatabaseError databaseError) {\r\n                        Log.e(\"FindClassActivity\", String.valueOf(databaseError.toException()));\r\n                    }\r\n                });\r\n\r\n                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {\r\n                    @Override\r\n                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {\r\n                        super.onScrolled(recyclerView, dx, dy);\r\n                        if(!recyclerView.canScrollVertically(1)){\r\n                            if(array_get.size()==10){\r\n                                Log.d(TAG, \"LAST POSI\");\r\n                            }\r\n\r\n                            databaseReference.orderByKey().endAt(oldestPostId).limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {\r\n                                @Override\r\n                                public void onDataChange(@Nullable DataSnapshot datasnapshot) {\r\n                                    array_get.clear();\r\n                                    old_array_get.clear();\r\n                                    for(DataSnapshot snapshot : datasnapshot.getChildren()){\r\n                                        array_get.add(0,snapshot.getValue(junkonglist.class));\r\n                                        old_array_get.add(snapshot.getKey());\r\n                                    }\r\n                                    if(array_get.size()>1){\r\n                                        array_get.remove(0);\r\n                                        arrayList.addAll(array_get);\r\n                                        oldestPostId = old_array_get.get(0);\r\n                                        adapter.notifyDataSetChanged();\r\n                                    }\r\n                                }\r\n\r\n\r\n                                @Override\r\n                                public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n                                }\r\n                            });\r\n                        }\r\n                    }\r\n\r\n                    @Override\r\n                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {\r\n                        super.onScrollStateChanged(recyclerView, newState);\r\n                    }\r\n                });\r\n                return false;\r\n            }\r\n\r\n            @Override\r\n            public boolean onQueryTextChange(String s) {\r\n                return false;\r\n            }\r\n        });\r\n\r\n\r\n//        query.addListenerForSingleValueEvent(new ValueEventListener() {\r\n//            @Override\r\n//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {\r\n//                arrayList.clear();\r\n//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {\r\n//\r\n//                    arrayList.add(0,snapshot.getValue(junkonglist.class));\r\n//                    array_get.add(0,snapshot.getValue(junkonglist.class));\r\n//                    old_array_get.add(snapshot.getKey());\r\n//                }\r\n////                oldestPostId = old_array_get.get(0);\r\n//                adapter = new CustomAdapter(arrayList, context);\r\n//\r\n//                recyclerView.setAdapter(adapter);\r\n//\r\n//            }\r\n//\r\n//            @Override\r\n//            public void onCancelled(@NonNull DatabaseError databaseError) {\r\n//                Log.e(\"FindClassActivity\", String.valueOf(databaseError.toException()));\r\n//            }\r\n//        });\r\n//\r\n//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {\r\n//            @Override\r\n//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {\r\n//                super.onScrolled(recyclerView, dx, dy);\r\n//                if(!recyclerView.canScrollVertically(1)){\r\n//                    if(array_get.size()==10){\r\n//                        Log.d(TAG, \"LAST POSI\");\r\n//                    }\r\n//\r\n//                    databaseReference.orderByKey().endAt(oldestPostId).limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {\r\n//                        @Override\r\n//                        public void onDataChange(@Nullable DataSnapshot datasnapshot) {\r\n//                            array_get.clear();\r\n//                            old_array_get.clear();\r\n//                            for(DataSnapshot snapshot : datasnapshot.getChildren()){\r\n//                                array_get.add(0,snapshot.getValue(junkonglist.class));\r\n//                                old_array_get.add(snapshot.getKey());\r\n//                            }\r\n//                            if(array_get.size()>1){\r\n//                                array_get.remove(0);\r\n//                                arrayList.addAll(array_get);\r\n//                                oldestPostId = old_array_get.get(0);\r\n//                                adapter.notifyDataSetChanged();\r\n//                            }\r\n//                        }\r\n//\r\n//\r\n//                        @Override\r\n//                        public void onCancelled(@NonNull DatabaseError error) {\r\n//\r\n//                        }\r\n//                    });\r\n//                }\r\n//            }\r\n//\r\n//            @Override\r\n//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {\r\n//                super.onScrollStateChanged(recyclerView, newState);\r\n//            }\r\n//        });\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/capstone_ui_1/Service/FindClassActivity.java	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/java/com/example/capstone_ui_1/Service/FindClassActivity.java	(date 1606279266930)
+@@ -7,9 +7,11 @@
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+ import android.content.Context;
++import android.content.Intent;
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
++import android.widget.Adapter;
+ import android.widget.AutoCompleteTextView;
+ import android.widget.EditText;
+ import android.widget.ProgressBar;
+@@ -18,8 +20,11 @@
+ import android.widget.Toast;
+ 
+ import com.example.capstone_ui_1.Adapter.CustomAdapter;
++import com.example.capstone_ui_1.Adapter.OnClassItemClickListener;
+ import com.example.capstone_ui_1.FireDB.junkonglist;
++import com.example.capstone_ui_1.HomeFragment;
+ import com.example.capstone_ui_1.R;
++import com.github.tlaabs.timetableview.Schedule;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+@@ -52,7 +57,16 @@
+     private Context context;
+     private Query query;
+     private String stored_grade;
++    private Schedule schedule;
++    private CustomAdapter myadapter;
+     private androidx.appcompat.widget.SearchView autoCompleteTextView;
++
++    // EditActivity와 통신
++    public static final int FIND_OK_CODE = 1000;
++
++    // PopupActivity와 통신
++    public static final int FIND_REQUEST_CODE = 3000;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -66,28 +80,63 @@
+         array_get = new ArrayList<>();
+         old_array_get = new ArrayList<String>();
+         database = FirebaseDatabase.getInstance();
+-//        stored_grade = "2학년";
+         autoCompleteTextView = (androidx.appcompat.widget.SearchView) findViewById(R.id.autoCompleteText);
+         databaseReference = database.getReference().child("junkong");
+         autoCompleteTextView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+             @Override
+             public boolean onQueryTextSubmit(String s) {
++
+                 query = databaseReference.orderByChild("classname").equalTo(s);
+                 query.addListenerForSingleValueEvent(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                         arrayList.clear();
+                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+-
+                             arrayList.add(0,snapshot.getValue(junkonglist.class));
+                             array_get.add(0,snapshot.getValue(junkonglist.class));
+                             old_array_get.add(snapshot.getKey());
+                         }
+ //                oldestPostId = old_array_get.get(0);
+-                        adapter = new CustomAdapter(arrayList, context);
++                        myadapter = new CustomAdapter(arrayList, context);
++                        recyclerView.setAdapter(myadapter);
++                        myadapter.setOnItemClickListener(new OnClassItemClickListener() {
++                            @Override
++                            public void onItemClick(CustomAdapter.CustomViewHolder holder, View view, int position){
++                                junkonglist list = arrayList.get(position);
++                                // 시간표에 추가 버튼 클릭시 실행됨
++                                Log.e("Findclass_list", list.toString());
++                                Log.e("Findclass_list_des", list.getClassname());
++                                Log.e("Findclass_list_des", list.getClassroom());
++                                // 데이터 저장 진행하고
++//                                Intent popupIntent = new Intent(getApplicationContext(), PopupActivity.class);
++//                                popupIntent.putExtra("classname", list.getClassname());
++//                                popupIntent.putExtra("classroom", list.getClassroom());
++//                                popupIntent.putExtra("professor", list.getProfessor());
++//                                popupIntent.putExtra("time", list.getTime());
++//                                popupIntent.putExtra("schedule", schedule);
++//                                startActivityForResult(popupIntent, FIND_REQUEST_CODE);
++//
++                                // 이거로 EditActivity랑 연결은 성립은 됨 우선
++                                // 이제 success code를 EditActivity에 돌려줘야 함.
++                                // TODO : Popup 안 쓰는 방법 생각해보자
++                                // Edit으로 다시 돌려보내기
++                                Intent i = new Intent(getApplicationContext(), EditActivity.class);
++                                i.putExtra("classname", list.getClassname());
++                                i.putExtra("classroom", list.getClassroom());
++                                i.putExtra("professor", list.getProfessor());
++                                i.putExtra("time", list.getTime());
++                                i.putExtra("schedule", schedule);
++                                Log.e("find_intent", (String) i.getExtras().get("classname"));
++                                Log.e("find_intent", (String) i.getExtras().get("professor"));
++                                setResult(FIND_OK_CODE, i);
++                                // 여기는 전부 아무 문제 없이 실행됨
+ 
+-                        recyclerView.setAdapter(adapter);
++                                Log.e("Find_startActivity", "find에서 setResult 실행됨");
++                                Log.e("Find_startActivity", String.valueOf(FIND_OK_CODE));
+ 
++                                finish();
++                            }
++                        });
+                     }
+ 
+                     @Override
+@@ -118,10 +167,9 @@
+                                         array_get.remove(0);
+                                         arrayList.addAll(array_get);
+                                         oldestPostId = old_array_get.get(0);
+-                                        adapter.notifyDataSetChanged();
++                                        myadapter.notifyDataSetChanged();
+                                     }
+                                 }
+-
+ 
+                                 @Override
+                                 public void onCancelled(@NonNull DatabaseError error) {
+@@ -144,8 +192,6 @@
+                 return false;
+             }
+         });
+-
+-
+ //        query.addListenerForSingleValueEvent(new ValueEventListener() {
+ //            @Override
+ //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+@@ -210,5 +256,17 @@
+ //            }
+ //        });
+     }
+-
++    @Override
++    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
++        super.onActivityResult(requestCode, resultCode, data);
++        Log.e("FindClass_onActResult", "onActivityResult 실행됨");
++        if (resultCode == PopupActivity.POP_REQUEST_ADD) {
++            switch (requestCode) {
++                case FIND_REQUEST_CODE:
++                    Intent i = new Intent();
++                    i.putExtra("result", "done");
++                    break;
++            }
++        }
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/capstone_ui_1/Service/EditActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.capstone_ui_1.Service;\r\n\r\nimport android.app.TimePickerDialog;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\n//import android.support.v7.app.AppCompatActivity;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.AdapterView;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.Spinner;\r\nimport android.widget.TextView;\r\nimport android.widget.TimePicker;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.capstone_ui_1.HomeFragment;\r\nimport com.example.capstone_ui_1.MainActivity;\r\nimport com.example.capstone_ui_1.R;\r\nimport com.github.tlaabs.timetableview.Schedule;\r\nimport com.github.tlaabs.timetableview.Time;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class EditActivity extends AppCompatActivity implements View.OnClickListener {\r\n    public static final int RESULT_OK_ADD = 1;\r\n    public static final int RESULT_OK_EDIT = 2;\r\n    public static final int RESULT_OK_DELETE = 3;\r\n\r\n    private Context context;\r\n    private Button time_table_search_button;\r\n    private Button deleteBtn;\r\n    private Button submitBtn;\r\n    private EditText subjectEdit;\r\n    private EditText classroomEdit;\r\n    private EditText professorEdit;\r\n    private Spinner daySpinner;\r\n    private TextView startTv;\r\n    private TextView endTv;\r\n\r\n    //request mode\r\n    private int mode;\r\n\r\n    private Schedule schedule;\r\n    private int editIdx;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_edit);\r\n        init();\r\n        time_table_search_button.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent(getApplicationContext(), FindClassActivity.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n    }\r\n\r\n    private void init(){\r\n        this.context = this;\r\n        deleteBtn = findViewById(R.id.delete_btn);\r\n        submitBtn = findViewById(R.id.submit_btn);\r\n        subjectEdit = findViewById(R.id.subject_edit);\r\n        classroomEdit = findViewById(R.id.classroom_edit);\r\n        professorEdit = findViewById(R.id.professor_edit);\r\n        daySpinner = findViewById(R.id.day_spinner);\r\n        startTv = findViewById(R.id.start_time);\r\n        endTv = findViewById(R.id.end_time);\r\n        time_table_search_button = (Button) findViewById(R.id.timetable_search_button);\r\n\r\n\r\n        //set the default time\r\n        schedule = new Schedule();\r\n        schedule.setStartTime(new Time(10,0));\r\n        schedule.setEndTime(new Time(13,30));\r\n\r\n        checkMode();\r\n        initView();\r\n    }\r\n\r\n    /** check whether the mode is ADD or EDIT */\r\n    private void checkMode(){\r\n        Intent i = getIntent();\r\n        mode = i.getIntExtra(\"mode\", HomeFragment.REQUEST_ADD);\r\n\r\n        if(mode == HomeFragment.REQUEST_EDIT){\r\n            loadScheduleData();\r\n            deleteBtn.setVisibility(View.VISIBLE);\r\n        }\r\n    }\r\n    private void initView(){\r\n        submitBtn.setOnClickListener(this);\r\n        deleteBtn.setOnClickListener(this);\r\n\r\n        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {\r\n            @Override\r\n            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {\r\n                schedule.setDay(position);\r\n            }\r\n\r\n            @Override\r\n            public void onNothingSelected(AdapterView<?> parent) {\r\n\r\n            }\r\n        });\r\n        startTv.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                TimePickerDialog dialog = new TimePickerDialog(context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);\r\n                dialog.show();\r\n            }\r\n\r\n            private TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {\r\n                @Override\r\n                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {\r\n                    startTv.setText(hourOfDay + \":\" + minute);\r\n                    schedule.getStartTime().setHour(hourOfDay);\r\n                    schedule.getStartTime().setMinute(minute);\r\n                }\r\n            };\r\n        });\r\n        endTv.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                TimePickerDialog dialog = new TimePickerDialog(context,listener,schedule.getEndTime().getHour(), schedule.getEndTime().getMinute(), false);\r\n                dialog.show();\r\n            }\r\n\r\n            private TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {\r\n                @Override\r\n                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {\r\n                    endTv.setText(hourOfDay + \":\" + minute);\r\n                    schedule.getEndTime().setHour(hourOfDay);\r\n                    schedule.getEndTime().setMinute(minute);\r\n                }\r\n            };\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void onClick(View v) {\r\n        switch (v.getId()){\r\n            case R.id.submit_btn:\r\n                if(mode == HomeFragment.REQUEST_ADD){\r\n                    inputDataProcessing();\r\n                    Intent i = new Intent();\r\n                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();\r\n                    //you can add more schedules to ArrayList\r\n                    schedules.add(schedule);\r\n                    i.putExtra(\"schedules\",schedules);\r\n                    setResult(RESULT_OK_ADD,i);\r\n                    finish();\r\n                }\r\n                else if(mode == HomeFragment.REQUEST_EDIT){\r\n                    inputDataProcessing();\r\n                    Intent i = new Intent();\r\n                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();\r\n                    schedules.add(schedule);\r\n                    i.putExtra(\"idx\",editIdx);\r\n                    i.putExtra(\"schedules\",schedules);\r\n                    setResult(RESULT_OK_EDIT,i);\r\n                    finish();\r\n                }\r\n                break;\r\n            case R.id.delete_btn:\r\n                Intent i = new Intent();\r\n                i.putExtra(\"idx\",editIdx);\r\n                setResult(RESULT_OK_DELETE, i);\r\n                finish();\r\n                break;\r\n        }\r\n    }\r\n\r\n    private void loadScheduleData(){\r\n        Intent i = getIntent();\r\n        editIdx = i.getIntExtra(\"idx\",-1);\r\n        ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra(\"schedules\");\r\n        schedule = schedules.get(0);\r\n        subjectEdit.setText(schedule.getClassTitle());\r\n        classroomEdit.setText(schedule.getClassPlace());\r\n        professorEdit.setText(schedule.getProfessorName());\r\n        daySpinner.setSelection(schedule.getDay());\r\n    }\r\n\r\n    private void inputDataProcessing(){\r\n        schedule.setClassTitle(subjectEdit.getText().toString());\r\n        schedule.setClassPlace(classroomEdit.getText().toString());\r\n        schedule.setProfessorName(professorEdit.getText().toString());\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/capstone_ui_1/Service/EditActivity.java	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/java/com/example/capstone_ui_1/Service/EditActivity.java	(date 1606280071553)
+@@ -5,6 +5,7 @@
+ import android.content.Intent;
+ //import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.View;
+ import android.widget.AdapterView;
+ import android.widget.Button;
+@@ -15,6 +16,7 @@
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
++import com.example.capstone_ui_1.Adapter.CustomAdapter;
+ import com.example.capstone_ui_1.HomeFragment;
+ import com.example.capstone_ui_1.MainActivity;
+ import com.example.capstone_ui_1.R;
+@@ -24,9 +26,17 @@
+ import java.util.ArrayList;
+ 
+ public class EditActivity extends AppCompatActivity implements View.OnClickListener {
+-    public static final int RESULT_OK_ADD = 1;
+-    public static final int RESULT_OK_EDIT = 2;
+-    public static final int RESULT_OK_DELETE = 3;
++    // HomeFragment 와 통신
++    public static final int EDIT_OK_ADD = 10;
++    public static final int EDIT_OK_EDIT = 20;
++    public static final int EDIT_OK_DELETE = 30;
++
++    // FindClassAcitivy 와 통신
++    public static final int EDIT_REQUEST_ADD = 100;
++    public static final int EDIT_REQUEST_EDIT = 200;
++
++    // PopupActivity 와 통신
++    public static final int EDIT_POP_CODE = 10000;
+ 
+     private Context context;
+     private Button time_table_search_button;
+@@ -38,6 +48,7 @@
+     private Spinner daySpinner;
+     private TextView startTv;
+     private TextView endTv;
++    private String Tag = "test";
+ 
+     //request mode
+     private int mode;
+@@ -50,14 +61,66 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_edit);
+         init();
++        // 시간표 검색하기 버튼 누르면
+         time_table_search_button.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(getApplicationContext(), FindClassActivity.class);
+-                startActivity(intent);
++//                intent.putExtra("mode", REQUEST_ADD);
++//                intent.putExtra("schedules", schedule);
++                startActivityForResult(intent, EDIT_REQUEST_ADD);
++                Log.e("edit_startActivity", "startActivityForResult 실행됨");
++                Log.e("edit_startActivity", String.valueOf(EDIT_REQUEST_ADD)); // 100
+             }
+         });
+     }
++
++
++    // 처리된 결과가 FindClassActivity의 FIND_OK_CODE이면 requestCode를 판별해 결과 처리 진행
++    // 이제 FindClassActivity와 연결은 됨
++    @Override
++    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
++        super.onActivityResult(requestCode, resultCode, data);
++        // 그냥 submit 누르면 resultCode = 10
++        // Find, Pop 거쳤다 오면 resultCode = 0
++        Log.e("Edit_onActivityResult", "onActivityResult 실행됨");
++        Log.e("EditAct_requestCode", String.valueOf(requestCode));
++        Log.e("EditAct_resultCode", String.valueOf(resultCode));
++        super.onActivityResult(requestCode, resultCode, data);
++//        if (resultCode == FindClassActivity.FIND_OK_CODE && requestCode == EDIT_REQUEST_ADD) {
++//            setResult(FindClassActivity.FIND_OK_CODE, data);
++//            finish();
++//        }
++        if (resultCode == FindClassActivity.FIND_OK_CODE) {
++            Log.e("Edit_requestCode", String.valueOf(requestCode));
++            Log.e("message", "resultCode는 FIND_OK_CODE와 같음");
++            Log.e("message", data.getStringExtra("professor"));
++            switch (requestCode) {
++                case EDIT_REQUEST_ADD:
++                    // 이 부분 수정해야 함
++//                    Intent i = getIntent();
++//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras()));
++//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("professor")));
++//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("classname")));
++//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("classroom")));
++//                    Log.e("onAct_i_getExtras", String.valueOf(i.getExtras().get("schedule")));
++//                    ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra("schedules");
++//                    Log.e("Edit_schedules", String.valueOf(schedules));
++//                    schedule = schedules.get(0);
++//                    subjectEdit.setText(schedule.getClassTitle());
++//                    classroomEdit.setText(schedule.getClassPlace());
++//                    professorEdit.setText(schedule.getProfessorName());
++//                    daySpinner.setSelection(schedule.getDay());
++                    Log.e("data_test", data.getStringExtra("classname"));
++                    Log.e("data_test", data.getStringExtra("classroom"));
++                    Log.e("data_test", data.getStringExtra("professor"));
++                    subjectEdit.setText(data.getStringExtra("classname"));
++                    classroomEdit.setText(data.getStringExtra("classroom"));
++                    professorEdit.setText(data.getStringExtra("professor"));
++                    break;
++            }
++        }
++    }
+ 
+     private void init(){
+         this.context = this;
+@@ -69,7 +132,7 @@
+         daySpinner = findViewById(R.id.day_spinner);
+         startTv = findViewById(R.id.start_time);
+         endTv = findViewById(R.id.end_time);
+-        time_table_search_button = (Button) findViewById(R.id.timetable_search_button);
++        time_table_search_button = findViewById(R.id.timetable_search_button);
+ 
+ 
+         //set the default time
+@@ -84,14 +147,24 @@
+     /** check whether the mode is ADD or EDIT */
+     private void checkMode(){
+         Intent i = getIntent();
+-        mode = i.getIntExtra("mode", HomeFragment.REQUEST_ADD);
++        mode = i.getIntExtra("mode", HomeFragment.HOME_REQUEST_ADD);
+ 
+-        if(mode == HomeFragment.REQUEST_EDIT){
++        if(mode == HomeFragment.HOME_REQUEST_EDIT){
+             loadScheduleData();
+             deleteBtn.setVisibility(View.VISIBLE);
+         }
+     }
+     private void initView(){
++        Intent test = getIntent();
++        String get_classroom = test.getStringExtra("classroom");
++        String get_classname = test.getStringExtra("classname");
++        String get_professor = test.getStringExtra("professor");
++
++        subjectEdit.setText(get_classname);
++        classroomEdit.setText(get_classroom);
++        professorEdit.setText(get_professor);
++
++
+         submitBtn.setOnClickListener(this);
+         deleteBtn.setOnClickListener(this);
+ 
+@@ -119,6 +192,8 @@
+                     startTv.setText(hourOfDay + ":" + minute);
+                     schedule.getStartTime().setHour(hourOfDay);
+                     schedule.getStartTime().setMinute(minute);
++                    String test = schedule.getStartTime().toString();
++                    Log.e(Tag, "log test : " + test);
+                 }
+             };
+         });
+@@ -144,31 +219,82 @@
+     public void onClick(View v) {
+         switch (v.getId()){
+             case R.id.submit_btn:
+-                if(mode == HomeFragment.REQUEST_ADD){
++                Log.e("Edit_onclick_mode", String.valueOf(mode));
++                Intent test = getIntent();
++                Log.e("test_getExtras", String.valueOf(test.getExtras()));
++                if (mode == PopupActivity.POP_REQUEST_ADD) {
+                     inputDataProcessing();
++                    // 결과를 Intent에 담아서 HomeFragment로 전달하고 현재 Activity는 종료
++                    Intent i = getIntent();
++                    Log.e("i_getExtras", String.valueOf(i.getExtras()));
++                    Log.e("i_getExtras", String.valueOf(i.getExtras().get("professor")));
++                    Log.e("i_getExtras", String.valueOf(i.getExtras().get("classname")));
++                    Log.e("i_getExtras", String.valueOf(i.getExtras().get("classroom")));
++                    Log.e("i_getExtras", String.valueOf(i.getExtras().get("timetest")));
++                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();
++                    //you can add more schedules m,to ArrayList
++                    schedules.add(schedule);
++                    Log.e("schedule_test", String.valueOf(schedule));
++                    i.putExtra("schedules",schedules);
++                    setResult(EDIT_POP_CODE, i);
++                    finish();
++                } else if (mode == FindClassActivity.FIND_OK_CODE){
++                    Log.e("Find_mode", String.valueOf(mode));
++                    inputDataProcessing();
++                    // 결과를 Intent에 담아서 HomeFragment로 전달하고 현재 Activity는 종료
+                     Intent i = new Intent();
+                     ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+-                    //you can add more schedules to ArrayList
++                    //you can add more schedules m,to ArrayList
+                     schedules.add(schedule);
+                     i.putExtra("schedules",schedules);
+-                    setResult(RESULT_OK_ADD,i);
++                    setResult(EDIT_OK_ADD, i);
+                     finish();
+-                }
+-                else if(mode == HomeFragment.REQUEST_EDIT){
++                } else {
++                    Log.e("Edit_mode", String.valueOf(mode));
+                     inputDataProcessing();
++                    // 결과를 Intent에 담아서 HomeFragment로 전달하고 현재 Activity는 종료
+                     Intent i = new Intent();
+                     ArrayList<Schedule> schedules = new ArrayList<Schedule>();
++                    //you can add more schedules m,to ArrayList
+                     schedules.add(schedule);
+-                    i.putExtra("idx",editIdx);
+                     i.putExtra("schedules",schedules);
+-                    setResult(RESULT_OK_EDIT,i);
++                    setResult(EDIT_OK_ADD, i);
+                     finish();
+                 }
++//                inputDataProcessing();
++//                // 결과를 Intent에 담아서 HomeFragment로 전달하고 현재 Activity는 종료
++//                Intent i = new Intent();
++//                ArrayList<Schedule> schedules = new ArrayList<Schedule>();
++//                //you can add more schedules m,to ArrayList
++//                schedules.add(schedule);
++//                i.putExtra("schedules",schedules);
++//                setResult(EDIT_OK_ADD, i);
++//                finish();
++//                if(mode == HomeFragment.REQUEST_ADD || mode == PopupActivity.REQUEST_ADD){
++//                    inputDataProcessing();
++//                    Intent i = new Intent(getApplicationContext(), HomeFragment.class);
++//                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();
++//                    //you can add more schedules m,to ArrayList
++//                    schedules.add(schedule);
++//                    i.putExtra("schedules",schedules);
++//                    setResult(EDIT_RES_ADD,i);
++//                    finish();
++//                }
++//                else if(mode == HomeFragment.REQUEST_EDIT){
++//                    inputDataProcessing();
++//                    Intent i = new Intent();
++//                    ArrayList<Schedule> schedules = new ArrayList<Schedule>();
++//                    schedules.add(schedule);
++//                    i.putExtra("idx",editIdx);
++//                    i.putExtra("schedules",schedules);
++//                    setResult(RESULT_OK_EDIT,i);
++//                    finish();
++//                }
+                 break;
+             case R.id.delete_btn:
+                 Intent i = new Intent();
+                 i.putExtra("idx",editIdx);
+-                setResult(RESULT_OK_DELETE, i);
++                setResult(EDIT_OK_DELETE, i);
+                 finish();
+                 break;
+         }
+Index: app/src/main/res/layout/activity_edit.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    >\r\n\r\n    <include layout=\"@layout/edit_appbar\" />\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\">\r\n\r\n        <EditText\r\n            android:id=\"@+id/subject_edit\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"Subject\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/classroom_edit\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"Classroom\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/professor_edit\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:hint=\"Professor\" />\r\n\r\n        <include layout=\"@layout/time_box\"/>\r\n\r\n    </LinearLayout>\r\n    <Button\r\n        android:id=\"@+id/timetable_search_button\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"50dp\"\r\n        android:layout_gravity=\"center\"\r\n        android:text=\"시간표로 검색하기\"/>\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_edit.xml	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/res/layout/activity_edit.xml	(date 1604544514000)
+@@ -7,7 +7,7 @@
+     android:orientation="vertical"
+     >
+ 
+-    <include layout="@layout/edit_appbar" />
++
+ 
+     <LinearLayout
+         android:layout_width="match_parent"
+@@ -33,13 +33,13 @@
+             android:hint="Professor" />
+ 
+         <include layout="@layout/time_box"/>
+-
++        <include layout="@layout/edit_appbar" />
+     </LinearLayout>
+     <Button
+         android:id="@+id/timetable_search_button"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_marginTop="50dp"
++        android:layout_marginTop="10dp"
+         android:layout_gravity="center"
+         android:text="시간표로 검색하기"/>
+ 
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'com.google.gms.google-services'\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n    buildToolsVersion \"30.0.1\"\r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.mycapstoneui\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\r\n    implementation 'com.github.tlaabs:TimetableView:1.0.3-fx1'\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'\r\n    implementation 'com.google.android.material:material:1.1.0'\r\n    implementation 'org.jetbrains:annotations-java5:15.0'\r\n    implementation 'com.google.firebase:firebase-database:19.5.1'\r\n    implementation 'com.google.firebase:firebase-analytics:17.2.3'\r\n    implementation 'com.google.firebase:firebase-core:17.2.3'\r\n    implementation 'androidx.recyclerview:recyclerview:1.1.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    // mapbox\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.3.0'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:2.0.1'\r\n    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/build.gradle	(date 1605684034000)
+@@ -2,13 +2,13 @@
+ apply plugin: 'com.google.gms.google-services'
+ 
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.1"
++    compileSdkVersion 28
++    buildToolsVersion "29.0.0"
+ 
+     defaultConfig {
+         applicationId "com.example.mycapstoneui"
+-        minSdkVersion 21
+-        targetSdkVersion 30
++        minSdkVersion 19
++        targetSdkVersion 28
+         versionCode 1
+         versionName "1.0"
+ 
+Index: app/src/main/res/layout/junkong_listview.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:baselineAligned=\"false\"\r\n    android:orientation=\"vertical\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:background=\"@drawable/border\"\r\n        android:orientation=\"vertical\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:orientation=\"horizontal\">\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"match_parent\">\r\n\r\n            </LinearLayout>\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"300dp\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginLeft=\"15dp\"\r\n                android:orientation=\"vertical\">\r\n\r\n                <TextView\r\n                    android:id=\"@+id/layout_classname\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_margin=\"5dp\"\r\n                    android:text=\"수업이름\"\r\n                    android:textStyle=\"bold\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/layout_professor\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_margin=\"3dp\"\r\n                    android:text=\"교수이름\"\r\n                    android:textSize=\"10sp\" />\r\n\r\n                <TextView\r\n                    android:id=\"@+id/layout_major\"\r\n                    android:layout_width=\"wrap_content\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:layout_margin=\"5dp\"\r\n                    android:text=\"소속 학과\"\r\n                    android:textSize=\"10sp\" />\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:orientation=\"horizontal\">\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/layout_time\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"3dp\"\r\n                        android:text=\"시간\"\r\n                        android:textSize=\"10sp\" />\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/layout_grade\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"3dp\"\r\n                        android:text=\"학년\"\r\n                        android:textSize=\"10sp\" />\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/layout_point\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"3dp\"\r\n                        android:text=\"학점\"\r\n                        android:textSize=\"10sp\" />\r\n\r\n                    <TextView\r\n                        android:id=\"@+id/layout_classroom\"\r\n                        android:layout_width=\"wrap_content\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_margin=\"3dp\"\r\n                        android:text=\"강의실\"\r\n                        android:textSize=\"10sp\" />\r\n                </LinearLayout>\r\n            </LinearLayout>\r\n\r\n            <Button\r\n                android:id=\"@+id/layout_legister\"\r\n                android:layout_width=\"10dp\"\r\n                android:layout_height=\"40dp\"\r\n                android:layout_gravity=\"center\"\r\n                android:layout_weight=\"1\"\r\n                android:background=\"#1B9591\"\r\n                android:text=\"시간표에 추가\"\r\n                android:textSize=\"12sp\" />\r\n\r\n        </LinearLayout>\r\n\r\n    </LinearLayout>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/junkong_listview.xml	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/res/layout/junkong_listview.xml	(date 1604898780000)
+@@ -94,7 +94,7 @@
+             <Button
+                 android:id="@+id/layout_legister"
+                 android:layout_width="10dp"
+-                android:layout_height="40dp"
++                android:layout_height="35dp"
+                 android:layout_gravity="center"
+                 android:layout_weight="1"
+                 android:background="#1B9591"
+Index: app/src/main/java/com/example/capstone_ui_1/Adapter/CustomAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.capstone_ui_1.Adapter;\r\n\r\nimport android.content.Context;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.capstone_ui_1.FireDB.junkonglist;\r\nimport com.example.capstone_ui_1.R;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {\r\n    private ArrayList<junkonglist> arrayList;\r\n    private Context context;\r\n\r\n    public CustomAdapter(ArrayList<junkonglist> arrayList, Context context){\r\n        this.arrayList = arrayList;\r\n        this.context = context;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.junkong_listview,parent,false);\r\n        CustomViewHolder holder = new CustomViewHolder(view);\r\n        return holder;\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {\r\n        holder.layout_classname.setText(arrayList.get(position).getClassname());\r\n        holder.layout_major.setText(arrayList.get(position).getMajor());\r\n        holder.layout_point.setText(arrayList.get(position).getPoint());\r\n        holder.layout_professor.setText(arrayList.get(position).getProfessor());\r\n        holder.layout_grade.setText(arrayList.get(position).getGrade());\r\n        holder.layout_time.setText(arrayList.get(position).getTime());\r\n        holder.layout_classroom.setText(arrayList.get(position).getClassroom());\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return (arrayList != null ? arrayList.size() : 0);\r\n    }\r\n\r\n    public class CustomViewHolder extends RecyclerView.ViewHolder {\r\n        TextView layout_classroom;\r\n        TextView layout_time;\r\n        TextView layout_professor;\r\n        TextView layout_grade;\r\n        TextView layout_classname;\r\n        TextView layout_major;\r\n        TextView layout_point;\r\n        Button layout_legister;\r\n        public CustomViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n            this.layout_classroom = itemView.findViewById(R.id.layout_classroom);\r\n            this.layout_classname = itemView.findViewById(R.id.layout_classname);\r\n            this.layout_major = itemView.findViewById(R.id.layout_major);\r\n            this.layout_point = itemView.findViewById(R.id.layout_point);\r\n            this.layout_grade = itemView.findViewById(R.id.layout_grade);\r\n            this.layout_professor = itemView.findViewById(R.id.layout_professor);\r\n            this.layout_time = itemView.findViewById(R.id.layout_time);\r\n            this.layout_legister = itemView.findViewById(R.id.layout_legister);\r\n            itemView.setOnClickListener(new View.OnClickListener(){\r\n                @Override\r\n                public void onClick(View view) {\r\n                    Toast toast = Toast.makeText(context, \"Hello\", Toast.LENGTH_LONG);\r\n                    toast.show();\r\n\r\n                }\r\n            });\r\n        }\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/capstone_ui_1/Adapter/CustomAdapter.java	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/java/com/example/capstone_ui_1/Adapter/CustomAdapter.java	(date 1606107184000)
+@@ -1,6 +1,7 @@
+ package com.example.capstone_ui_1.Adapter;
+ 
+ import android.content.Context;
++import android.content.Intent;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -13,23 +14,35 @@
+ 
+ import com.example.capstone_ui_1.FireDB.junkonglist;
+ import com.example.capstone_ui_1.R;
++import com.example.capstone_ui_1.Service.EditActivity;
++import com.github.tlaabs.timetableview.Schedule;
++import com.github.tlaabs.timetableview.Time;
+ 
++import org.w3c.dom.Text;
++
++import java.lang.reflect.Array;
+ import java.util.ArrayList;
+ 
+ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
++    public static final int RESULT_OK_ADD = 1;
++    public static final int RESULT_OK_EDIT = 2;
++    public static final int RESULT_OK_DELETE = 3;
+     private ArrayList<junkonglist> arrayList;
+     private Context context;
+-
++    private Schedule schedule;
++    private Toast toast;
++    OnClassItemClickListener listener;
+     public CustomAdapter(ArrayList<junkonglist> arrayList, Context context){
+         this.arrayList = arrayList;
+         this.context = context;
++        schedule = new Schedule();
+     }
+ 
+     @NonNull
+     @Override
+     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.junkong_listview,parent,false);
+-        CustomViewHolder holder = new CustomViewHolder(view);
++        CustomViewHolder holder = new CustomViewHolder(view, this);
+         return holder;
+     }
+ 
+@@ -49,6 +62,21 @@
+         return (arrayList != null ? arrayList.size() : 0);
+     }
+ 
++    public void setOnItemClickListener(OnClassItemClickListener listener) {
++        this.listener = listener;
++    }
++
++
++    public void onItemClick(CustomViewHolder holder, View view, int position) {
++        if(listener != null) {
++            listener.onItemClick(holder,view,position); }
++    }
++
++//    public junkonglist getlist(int position){
++//        return
++//    }
++
++
+     public class CustomViewHolder extends RecyclerView.ViewHolder {
+         TextView layout_classroom;
+         TextView layout_time;
+@@ -58,7 +86,7 @@
+         TextView layout_major;
+         TextView layout_point;
+         Button layout_legister;
+-        public CustomViewHolder(@NonNull View itemView) {
++        public CustomViewHolder(@NonNull View itemView, final CustomAdapter listener) {
+             super(itemView);
+             this.layout_classroom = itemView.findViewById(R.id.layout_classroom);
+             this.layout_classname = itemView.findViewById(R.id.layout_classname);
+@@ -68,16 +96,21 @@
+             this.layout_professor = itemView.findViewById(R.id.layout_professor);
+             this.layout_time = itemView.findViewById(R.id.layout_time);
+             this.layout_legister = itemView.findViewById(R.id.layout_legister);
+-            itemView.setOnClickListener(new View.OnClickListener(){
++            layout_legister.setOnClickListener(new View.OnClickListener(){
+                 @Override
+-                public void onClick(View view) {
+-                    Toast toast = Toast.makeText(context, "Hello", Toast.LENGTH_LONG);
+-                    toast.show();
+-
++                public void onClick(View v){
++                    int position = getAdapterPosition();
++                    if(listener != null){
++                        listener.onItemClick(CustomViewHolder.this, v, position);
++                    }
+                 }
+             });
+         }
+     }
+-
++//    private void inputDataProcessing(TextView a, TextView b, TextView c){
++//        schedule.setClassTitle(a.getText().toString());
++//        schedule.setClassPlace(b.getText().toString());
++//        schedule.setProfessorName(c.getText().toString());
++//    }
+ 
+ }
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.capstone_ui_1\">\r\n\r\n    <uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".Service.FindClassActivity\"></activity>\r\n        <activity android:name=\".MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity android:name=\".Service.EditActivity\"></activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/AndroidManifest.xml	(date 1606121344000)
+@@ -11,7 +11,9 @@
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme">
+-        <activity android:name=".Service.FindClassActivity"></activity>
++
++        <activity android:name=".Service.PopupActivity" android:theme="@android:style/Theme.Holo.Dialog" />
++        <activity android:name=".Service.FindClassActivity" />
+         <activity android:name=".MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+@@ -19,7 +21,7 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+-        <activity android:name=".Service.EditActivity"></activity>
++        <activity android:name=".Service.EditActivity" />
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/res/layout/edit_appbar.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<merge xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"horizontal\"\r\n        >\r\n\r\n        <Button\r\n            android:id=\"@+id/delete_btn\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:visibility=\"gone\"\r\n            android:text=\"delete\"\r\n            />\r\n        <Button\r\n            android:id=\"@+id/submit_btn\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"submit\"\r\n            />\r\n\r\n\r\n    </LinearLayout>\r\n\r\n</merge>\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/edit_appbar.xml	(revision 41b332576f555a93d371dac2ddac0cd2193eca58)
++++ app/src/main/res/layout/edit_appbar.xml	(date 1604544514000)
+@@ -15,7 +15,8 @@
+             />
+         <Button
+             android:id="@+id/submit_btn"
+-            android:layout_width="wrap_content"
++            android:layout_marginTop="50dp"
++            android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="submit"
+             />
