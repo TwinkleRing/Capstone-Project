@@ -23,17 +23,18 @@
             android:layout_marginVertical="15dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btn_clock"
+                android:layout_width="47dp"
+                android:layout_height="47dp"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/alarm_clock2"
-                android:id="@+id/btn_clock"/>
+                android:src="@drawable/alarm_clock2" />
 
             <TextView
                 android:id="@+id/txt_lecture_item_list_className"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="4dp"
                 android:layout_weight="8"
                 android:text="강의명"
                 android:textSize="30dp" />
@@ -58,7 +59,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:text="00:00 AM"
-            android:textSize="25dp"/>
+            android:textSize="20dp"/>
 
         <CheckBox
             android:id="@+id/btn_check1"
@@ -84,7 +85,7 @@
             android:layout_weight="7"
             android:layout_gravity="center_vertical"
             android:text="00:00 AM"
-            android:textSize="25dp" />
+            android:textSize="20dp" />
 
         <CheckBox
             android:id="@+id/btn_check2"
@@ -111,7 +112,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:text="00:00 AM"
-            android:textSize="25dp"/>
+            android:textSize="20dp"/>
 
         <CheckBox
             android:id="@+id/btn_check3"
@@ -138,7 +139,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:text="00:00 AM"
-            android:textSize="25dp"/>
+            android:textSize="20dp"/>
 
         <CheckBox
             android:id="@+id/btn_check4"
@@ -165,7 +166,7 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:text="00:00 AM"
-            android:textSize="25dp"/>
+            android:textSize="20dp"/>
 
         <CheckBox
             android:id="@+id/btn_check5"

@@ -37,7 +37,7 @@ public class SettingActivity extends AppCompatActivity {
     SQLiteDatabase sqlDB;
     MyDBHelper myHelper;
     Integer timesPerDay;
-    Integer[] day_array; // 요일 array
+    Integer[] day_array;
     String[] time_array;
     String startday, endday;
     TextView startDate, endDate;
@@ -324,7 +324,9 @@ public class SettingActivity extends AppCompatActivity {
                     dlg1.show();
                 }
             });
+
             name.setText(time_table_Name);
+
             btn_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

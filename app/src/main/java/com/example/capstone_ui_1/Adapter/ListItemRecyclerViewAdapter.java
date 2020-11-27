@@ -63,7 +63,7 @@ public class ListItemRecyclerViewAdapter extends RecyclerView.Adapter<ListItemRe
             holder.day_wed.setText("");
         }
 
-        if (sList.get(i).getTue() == 1) {
+        if (sList.get(i).getThu() == 1) {
             holder.day_thu.setText("목");
         } else {
             holder.day_thu.setText("");

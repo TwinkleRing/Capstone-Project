@@ -1,6 +1,7 @@
 package com.example.capstone_ui_1.Service;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +16,11 @@ import com.example.capstone_ui_1.R;
 import java.util.ArrayList;
 
 public class ClassActivity extends AppCompatActivity {
-
-
+    SQLiteDatabase sqlDB;
     MyDBHelper myHelper;
     RecyclerView lecture_list;
     BackPressCloseHandler backPressCloseHandler;
-    com.example.capstone_ui_1.Adapter.LectureListRecyclerViewAdapter LectureListRecyclerViewAdapter;
+    LectureListRecyclerViewAdapter LectureListRecyclerViewAdapter;
     ArrayList<LectureList> lectureList = new ArrayList<>();
 
     @Override
@@ -28,6 +28,8 @@ public class ClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
         myHelper = new MyDBHelper(this);
+        sqlDB = myHelper.getReadableDatabase();
+
         lectureList.addAll(myHelper.allLListItems());
 
         backPressCloseHandler = new BackPressCloseHandler(this);

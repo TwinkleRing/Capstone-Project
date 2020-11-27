@@ -21,8 +21,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
                 "mon INTEGER, tue INTEGER, wed INTEGER, thu INTEGER," +
                 "fri INTEGER, sat INTEGER, sun INTEGER);");
 
-        db.execSQL("CREATE TABLE time (timeId INTEGER PRIMARY KEY AUTOINCREMENT, oneTime TEXT NOT NULL, " +
-                "twoTime TEXT, threeTime TEXT, " +
+        db.execSQL("CREATE TABLE time (timeId INTEGER PRIMARY KEY AUTOINCREMENT, oneTime TEXT NOT NULL, twoTime TEXT, threeTime TEXT, " +
                 "fourTime TEXT, fiveTime TEXT, " +
                 "FOREIGN KEY(timeId) REFERENCES class(classId));");
     }
@@ -159,18 +158,18 @@ public class MyDBHelper extends SQLiteOpenHelper {
                 lListItems.add(lListItem);
                 Log.e("수:", cursor.getString(1));
             } else if (now.equals("목") && cursor.getInt(8) == 1) {
-                LectureList lListItem = new LectureList();
-                lListItem.setClassId(cursor.getInt(0));
-                lListItem.setClassName(cursor.getString(1));
-                lListItem.setStartDate(cursor.getString(2));
-                lListItem.setEndDate(cursor.getString(3));
-                lListItem.setTimesPerDay(cursor.getInt(4));
-                lListItem.setOneTime(cursor2.getString(13));
-                lListItem.setTwoTime(cursor2.getString(14));
-                lListItem.setThreeTime(cursor2.getString(15));
-                lListItem.setFourTime(cursor2.getString(16));
-                lListItem.setFiveTime(cursor2.getString(17));
-                lListItems.add(lListItem);
+                LectureList pListItem = new LectureList();
+                pListItem.setClassId(cursor.getInt(0));
+                pListItem.setClassName(cursor.getString(1));
+                pListItem.setStartDate(cursor.getString(2));
+                pListItem.setEndDate(cursor.getString(3));
+                pListItem.setTimesPerDay(cursor.getInt(4));
+                pListItem.setOneTime(cursor2.getString(13));
+                pListItem.setTwoTime(cursor2.getString(14));
+                pListItem.setThreeTime(cursor2.getString(15));
+                pListItem.setFourTime(cursor2.getString(16));
+                pListItem.setFiveTime(cursor2.getString(17));
+                lListItems.add(pListItem);
                 Log.e("목:", cursor.getString(1));
             } else if (now.equals("금") && cursor.getInt(9) == 1) {
                 LectureList lListItem = new LectureList();
