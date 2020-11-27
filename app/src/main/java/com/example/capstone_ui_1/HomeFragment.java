@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 i.putExtra("idx", idx);
                 i.putExtra("schedules", schedules);
                 startActivityForResult(i, HOME_REQUEST_EDIT);
+                Log.e("Home_timetable", "HomeFragment에서 timetable 클릭됨");
             }
         });
 

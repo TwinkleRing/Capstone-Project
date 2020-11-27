@@ -86,7 +86,7 @@ public class FindClassActivity extends AppCompatActivity{
             @Override
             public boolean onQueryTextSubmit(String s) {
 
-                query = databaseReference.orderByChild("classname").equalTo(s);
+                query = databaseReference.orderByChild("classname").equalTo(s); // TODO : 학재 수정중
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

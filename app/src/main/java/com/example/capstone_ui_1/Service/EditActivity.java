@@ -187,6 +187,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         Intent i = getIntent();
         mode = i.getIntExtra("mode", HomeFragment.HOME_REQUEST_ADD);
         Log.d("what is mode?", "" + mode);
+        // Home에서 tiemtable 클릭시 여기로 넘어옴
         if(mode == HomeFragment.HOME_REQUEST_EDIT){
             Log.d("here come?", "" + mode);
             loadScheduleData();
@@ -380,7 +381,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadScheduleData(){
         Intent i = getIntent();
-        editIdx = i.getIntExtra("idx",-1);
+        // 이 부분때문에 시간표 load 오류남
+//        editIdx = i.getIntExtra("idx",-1);
         ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra("schedules");
         schedule = schedules.get(editIdx);
         Log.d("edit class", "" + schedule.getClassTitle());
@@ -388,6 +390,10 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         classroomEdit.setText(schedule.getClassPlace());
         professorEdit.setText(schedule.getProfessorName());
         daySpinner.setSelection(schedule.getDay());
+        Log.e("edit class detail", schedule.getClassTitle());
+        Log.e("edit class detail", schedule.getClassTitle());
+        Log.e("edit class detail", schedule.getProfessorName());
+        Log.e("edit class detail", String.valueOf(schedule.getDay()));
     }
 
     private void inputDataProcessing(){
