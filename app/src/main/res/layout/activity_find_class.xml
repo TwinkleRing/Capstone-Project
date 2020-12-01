@@ -60,11 +60,10 @@
                 android:id="@+id/autoCompleteText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:completionHint="pick an item" />
+                android:completionHint="pick an item"
+                android:inputType="textAutoComplete"/>
         </LinearLayout>
 
-
-        출처: https://namget.tistory.com/entry/안드로이드-AutoComplete-자동-검색-기능-만들기 [남갯,YTS의 개발,일상블로그]
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,12 +73,15 @@
         android:padding="10dp"
         android:background="@color/white"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="blocksDescendants">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id ="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent"
+            android:isScrollContainer="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

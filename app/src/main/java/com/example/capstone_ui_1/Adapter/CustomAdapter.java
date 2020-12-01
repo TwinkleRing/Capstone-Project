@@ -32,9 +32,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     private Schedule schedule;
     private Toast toast;
     OnClassItemClickListener listener;
-    public CustomAdapter(ArrayList<junkonglist> arrayList, Context context){
+    public CustomAdapter(ArrayList<junkonglist> arrayList){
         this.arrayList = arrayList;
-        this.context = context;
         schedule = new Schedule();
     }
 
@@ -75,7 +74,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 //    public junkonglist getlist(int position){
 //        return
 //    }
-
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView layout_classroom;
