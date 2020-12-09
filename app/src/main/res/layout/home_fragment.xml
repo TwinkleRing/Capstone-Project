@@ -57,24 +57,36 @@
             android:id="@+id/save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/mapboxBlue"
+            android:textColor="@color/mapboxWhite"
+            android:textStyle="bold"
             android:text="Save" />
 
         <Button
             android:id="@+id/load_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/mapboxBlue"
+            android:textColor="@color/mapboxWhite"
+            android:textStyle="bold"
             android:text="Load" />
 
         <Button
             android:id="@+id/add_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/mapboxBlue"
+            android:textColor="@color/mapboxWhite"
+            android:textStyle="bold"
             android:text="Add" />
 
         <Button
             android:id="@+id/clear_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/mapboxBlue"
+            android:textColor="@color/mapboxWhite"
+            android:textStyle="bold"
             android:text="Clear" />
 
     </LinearLayout>

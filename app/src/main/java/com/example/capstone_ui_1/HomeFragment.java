@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView(){
+        Log.e("initView", "initView 실행됨");
         addBtn.setOnClickListener(this);
         clearBtn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
