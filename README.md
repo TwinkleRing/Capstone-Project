@@ -2,7 +2,7 @@
 
 ## 프로젝트명
 **알단지(알람 + 단국대 + 지도)**
-{% include index.html id="RQQwxN8pxB0" %}
+video: https://www.youtube.com/embed/RQQwxN8pxB0
 
 ## 프로젝트 소개
 **단국대 학생들을 위한 통합 어플리케이션**<br>
