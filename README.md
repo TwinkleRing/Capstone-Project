@@ -1,19 +1,21 @@
 # 단국대 학생들을 위한 통합 어플리케이션 프로젝트(알단지)
 
 ## 프로젝트명
-**알단지(알람 + 단국대 + 지도)**
-[유튜브에서 확인하기](https://www.youtube.com/watch?v=RQQwxN8pxB0)
-[![알단지 - 유튜브](https://www.youtube.com/watch?v=RQQwxN8pxB0/0.jpg)(https://www.youtube.com/watch?v=RQQwxN8pxB0)]
+**알단지(알람 + 단국대 + 지도)**<br>
+[유튜브에서 확인하기](https://www.youtube.com/watch?v=RQQwxN8pxB0)<br>
+[![알단지 - 유튜브](https://img.youtube.com/watch?v=RQQwxN8pxB0/0.jpg)(https://www.youtube.com/watch?v=RQQwxN8pxB0)]
 
 ## 프로젝트 소개
 **단국대 학생들을 위한 통합 어플리케이션**<br>
 [발표 ppt로 전체 내용 확인하기](./document/2조_3KM_2020년_2학기_발표_PPT_최종.pdf)
+
 
 ## 기획 의도
 단국대 학생들이 주로 사용하는 어플리케이션의 부족한 점을 분석, 보완한 새로운 어플리케이션의 구현
 - 알람 기능 : 많은 대학생들이 사용하는 '에브리타임' 어플의 경우 강의 별 알람은 제공 X
 - 캠퍼스 맵 기능 : 단국대 공식 어플은 캠퍼스 맵 기능을 제공하지 않으며, 매번 단국대 홈페이지를 들어가야 하는 번거로움
 이 기획의도들의 달성을 통해 단국대 학생들의 쾌적한 캠퍼스 라이프를 목표로 함
+
 
 ## 세부 내용
 ### 기술 스택 및 개발 환경
@@ -92,6 +94,7 @@ private void getRoute_navi_walking (Point origin, Point destinaton) {
 ![최종 화면 1](https://user-images.githubusercontent.com/41367134/106094487-75c75e00-6175-11eb-9040-2879be4b942d.PNG)
 ![최종 화면 2](https://user-images.githubusercontent.com/41367134/106094500-7bbd3f00-6175-11eb-95b8-e613789eff12.PNG)
 
+
 ## 결론
 - 실제 사용 중인 서비스의 부족한 점을 분석하고 구현
 - 구현 과정에 있어 다양한 기술 스택의 사용
@@ -99,6 +102,7 @@ private void getRoute_navi_walking (Point origin, Point destinaton) {
 - 실제 기업과의 소통을 통해 문제점에 대한 해결책을 찾아냄
 - 구현 과정에 있어 발생했던 문제점들에 대해 협의를 통한 해결책 모색
 - 초기 목표로 했던 바 모두 달성
+
 
 ## 참고 문헌
 - [Mapbox Tutorial](https://docs.mapbox.com/help/tutorials/)
