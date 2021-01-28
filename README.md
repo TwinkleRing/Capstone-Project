@@ -3,7 +3,7 @@
 ## 프로젝트명
 **알단지(알람 + 단국대 + 지도)**<br>
 [유튜브에서 확인하기](https://www.youtube.com/watch?v=RQQwxN8pxB0)<br>
-[![알단지 - 유튜브](https://img.youtube.com/vi/RQQwxN8pxB0/0.jpg)(https://www.youtube.com/watch?v=RQQwxN8pxB0)]
+[![알단지 - 유튜브](https://img.youtube.com/vi/RQQwxN8pxB0/0.jpg)](https://www.youtube.com/watch?v=RQQwxN8pxB0)
 
 ## 프로젝트 소개
 **단국대 학생들을 위한 통합 어플리케이션**<br>
